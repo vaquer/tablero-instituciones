@@ -162,7 +162,7 @@
 
 
           function getapiOrg(orgName){
-            var totalCalidad, percentRecommen, percentCalidad, dataApi, orgTitle, orgLogoUrl, downloads, adelaIssued, resourceId, rating, totalRaiting, resourceTitle, resourceType;
+            var totalCalidad, percentRecommen, percentCalidad, dataApi, dataApiOPI, dataDescargasOpi, orgTitle, orgLogoUrl, downloads, adelaIssued, resourceId, rating, totalRaiting, resourceTitle, resourceType;
             var valueDownloads = [];
             var issuedTotal = 0;
             var issuedPublish  = 0;
@@ -184,7 +184,32 @@
                 console.log("error- ",data);
               }
             });
-            //console.log(dataApi);
+
+            $.ajax({
+              //url: 'http://api.datos.gob.mx/v1/data-fusion?catalog-dataset.publisher.name=SHCP&pageSize=1000',
+              url: '/tablero-instituciones/apicomparativa/' + orgName + '/',
+              async: false,
+              type: 'GET',
+              success: function(data) {
+                dataApiOPI = data;
+              },
+              error: function(data){
+                console.log("error- ",data);
+              }
+            });
+
+            $.ajax({
+              //url: 'http://api.datos.gob.mx/v1/data-fusion?catalog-dataset.publisher.name=SHCP&pageSize=1000',
+              url: '/tablero-instituciones/apicomparativa/recursos-mas-descargados/' + orgName + '/',
+              async: false,
+              type: 'GET',
+              success: function(data) {
+                dataDescargasOpi = data;
+              },
+              error: function(data){
+                console.log("error- ",data);
+              }
+            });
 
             orgLogoUrl = 'https://raw.githubusercontent.com/mxabierto/assets/master/img/logos/' + orgName + '.png';
             $('#logo_org').attr('src',orgLogoUrl);
@@ -198,26 +223,6 @@
               resourceId = value.adela.dataset.id;
               //Obtengo Titulo
               resourceTitle = value.adela.dataset.title;
-              //Calificación Calidad de Datos
-              if (value.calificacion == "bronce") {
-                sumaCalidad += 1;
-              } else if (value.calificacion == "plata") {
-                sumaCalidad += 2;
-              } else if (value.calificacion == "oro") {
-                sumaCalidad += 3;
-              }
-
-              
-              /*
-               console.log(totalCalidad);
-              if (totalCalidad > 0 && totalCalidad <= 1.5) {
-                var calidadDatos = "Bronce";
-              } else if (totalCalidad > 1.5 && totalCalidad <= 2.5) {
-                var calidadDatos = "Plata";
-              } else if (totalCalidad > 2.5 && totalCalidad <= 3) {
-                var calidadDatos = "Oro";
-              }
-              */
 
               totalRecommendations = totalRecommendations + value.recommendations.length
 
@@ -236,30 +241,6 @@
                 $('#table-recommendations tr').first().after(html);
               });
 
-
-              //Recorre descargas
-              $.each(value.analytics,function(key, value){
-                downloads = value.total;
-
-                if (downloads != null) {
-                  valueDownloads.push(downloads);
-                }
-
-              });
-
-              //Obtengo fecha de publicación (issued) para setear recursos publicados y total de recursos
-              adelaIssued = value.adela.dataset.issued;
-              issuedTotal = issuedTotal+1
-              if ( adelaIssued != null ) {
-                issuedPublish = issuedPublish + 1;
-              }
-              $('#issuedTotal').text('/'+issuedTotal);
-              $('#issuedPublish').text(issuedPublish);
-
-              //Obtengo calificacion de apertura
-              rating = value.adela.dataset.openessRating;
-              sumaRating = sumaRating + rating;
-
               //Obtengo public
               var isPublic = value.adela.dataset.public;
               if (isPublic == true) {
@@ -270,11 +251,11 @@
 
             });
 
-            totalCalidad = Math.ceil(sumaCalidad / issuedTotal);
-            $("#calidadDatosHtml").text(calidad_calif[(isNaN(totalCalidad) ? 0 : totalCalidad)]);
+            $("#calidadDatosHtml").text(dataApiOPI.calidad.charAt(0).toUpperCase() + dataApiOPI.calidad.slice(1));
+            $("#stars-raiting").attr("data-rating", dataApiOPI.apertura);
 
-            totalRaiting = Math.round(sumaRating / issuedTotal);
-            $("#stars-raiting").attr("data-rating", (isNaN(totalRaiting) ? 0 : totalRaiting));
+            $('#issuedTotal').text('/'+dataApiOPI.total);
+            $('#issuedPublish').text(dataApiOPI.publicados);
 
             //Función para obtener el top 5 de descargas
             function getTopN(arr, prop, n) {
@@ -292,15 +273,17 @@
             }
 
             var n = 5;
-            var topScorers = getTopN(valueDownloads, "value", n);
+            var topScorers = dataDescargasOpi.recursos;
             topScorers.forEach(function(item, index) {
               var dateDownload = new Date(item.date_insert);
               var day = dateDownload.getDate();
               var monthIndex = dateDownload.getMonth();
               var year = dateDownload.getFullYear();
               var htmlDown = '';
-              htmlDown += '<tr><td>' + resourceTitle + '</td><td>' + day + ' ' + monthNames[monthIndex] + ' ' + year + '</td><td class="text-center">' + item.value + '</td></tr>';
-              $('#table-downloads tr').last().after(htmlDown);
+              if(item.descargas > 0){
+                htmlDown += '<tr><td>' + item.recurso + '</td><td>' + item.actualizacion + '</td><td class="text-center">' + item.descargas + '</td></tr>';
+                $('#table-downloads tr').last().after(htmlDown);
+              }
             });
 
             /////Raiting

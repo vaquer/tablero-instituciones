@@ -5,6 +5,7 @@ calificaciones, ordenamientos y datos
 complementarios de las dependencias
 """
 import requests
+import datetime
 import operator
 from collections import OrderedDict
 from django.core.cache import cache
@@ -15,10 +16,12 @@ ARRAY_MEDALLAS = {0: 'N/A', 1: 'bronce', 2: 'plata', 3: 'oro'}
 
 JSON_DEPENDENCIAS = OrderedDict()
 JSON_RECURSOS = OrderedDict()
+JSON_RECURSOS_DEPENDENCIAS = OrderedDict()
 URL_ADELA = 'http://api.datos.gob.mx/v1/data-fusion?adela.inventory.slug={0}&page={1}'
 URL_CKAN = 'http://datos.gob.mx/busca/api/3/action/organization_list'
 KEY_DEPEN = 'resumen-dependendencias'
 KEY_RECUR = 'descargas-recursos'
+KEY_DEPEND_RECURSOS = 'descargas-recursos-dependencias'
 CACHE_TTL = 60 * 60 * 27
 
 
@@ -169,30 +172,52 @@ class MatTableros(object):
         recomendaciones = False
         pendientes = False
         nombre_institucion = ''
+        publicados = 0
 
         # Se obtienen las paginas a recorrer
         vecindario_de_paginas = MatTableros.generar_paginacion(dependencia)
-
+        JSON_RECURSOS_DEPENDENCIAS[dependencia] = []
         for pagina in vecindario_de_paginas:
             json_buda = NetWorkTablero.llamar_a_buda(dependencia, pagina)
 
             for recurso in json_buda.get('results', []):
+                fecha_act = None
                 if recurso['calificacion'] != u'none':
                     calidad += MEDALLAS[recurso['calificacion']]
                 else:
                     calidad += 1
+
+                if recurso['analytics']['downloads']['total'] is not None:
+                    fecha_act = datetime.datetime.strptime(recurso['analytics']['downloads']['total']['date_insert'][:-6], '%Y-%m-%dT%H:%M:%S.%f')
+                    
                 try:
                     descargas += recurso['analytics']['downloads']['total']['value']
+
+                    json_recurso = {
+                        'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
+                        'descargas': recurso['analytics']['downloads']['total']['value'],
+                        'actualizacion': fecha_act.strftime("%d %b %Y")
+                    }
+
+                    JSON_RECURSOS_DEPENDENCIAS[dependencia].append(json_recurso)
                     JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = recurso['analytics']['downloads']['total']['value']
                 except TypeError:
                     descargas += 0
+                    JSON_RECURSOS_DEPENDENCIAS[dependencia].append({
+                        'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
+                        'descargas': 0,
+                        'actualizacion': None
+                    })
                     JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = 0
 
                 if len(recurso['recommendations']) > 0:
                     recomendaciones = True
 
-                if recurso['adela']['resource']['publishDate'] == None or recurso['adela']['resource']['publishDate'] == 'null':
+                if recurso['adela']['resource']['publishDate'] is None:
                     pendientes = True
+
+                if recurso['adela']['resource']['issued'] is not None:
+                    publicados += 1
 
                 try:
                     if not nombre_institucion:
@@ -215,7 +240,6 @@ class MatTableros(object):
         calidad = ARRAY_MEDALLAS[(calidad/contador)]
         calificacion = MatTableros.genera_calificacion(calidad, pendientes, descargas > 0, recomendaciones)
 
-
         return {
             'institucion': nombre_institucion or dependencia,
             'apertura': apertura,
@@ -223,6 +247,8 @@ class MatTableros(object):
             'descargas': descargas,
             'slug': dependencia,
             'total': contador,
+            'publicados': publicados,
+            'sin-publicar': contador - publicados,
             'calificacion': calificacion,
             'ranking': 0
         } if len(json_buda.get('results', [])) > 1 else {
@@ -230,6 +256,8 @@ class MatTableros(object):
             'apertura': 0,
             'calidad': 'N/A',
             'descargas': 0,
+            'publicados': 0,
+            'sin-publicar': 0,
             'total': 0,
             'calificacion': 0,
             'ranking': 0,
@@ -253,5 +281,7 @@ def scrapear_api_buda():
     ranking = MatTableros.calcula_ranking(JSON_DEPENDENCIAS)
     cache.set(KEY_DEPEN, ranking, CACHE_TTL)
     cache.set(KEY_RECUR, JSON_RECURSOS, CACHE_TTL)
+    cache.set(KEY_DEPEND_RECURSOS, JSON_RECURSOS_DEPENDENCIAS, CACHE_TTL)
+
     print "************************Terminan calculos*************************************"
     print "DEPENDENCIAS PROCESADAS: {0}".format(str(count_dependencias))

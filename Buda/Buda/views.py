@@ -56,6 +56,26 @@ def api_comparativa(request):
     return JsonResponse({'dependencias': dependencias_cache})
 
 
+def api_comparativa_dependencia(request, slug):
+    """
+    Vista que retorna el calculo
+    de las varibales de una
+    dependencia especifica
+    URL: /tablero-instituciones/apicomparativa/{slug}/
+    RESPUESTA: Json
+    """
+    dependencias_cache = cache.get('resumen-dependendencias', None)
+
+    try:
+        for elemento in dependencias_cache:
+            if elemento['slug'] == slug:
+                return JsonResponse(elemento)
+    except Exception:
+        raise Http404
+    else:
+        raise Http404
+
+
 def recursos_mas_descargados(request):
     """
     Vista que retorna el Top 5
@@ -71,3 +91,36 @@ def recursos_mas_descargados(request):
         recursos_ordenados = sorted(recursos.items(), key=ky, reverse=True)[:5]
 
     return JsonResponse({'recursos': recursos_ordenados}, safe=False)
+
+
+def recursos_mas_descargados_dep(request, slug):
+    """
+    Vista que retorna el Top 5
+    de recursos mas descargados
+    de una dependencia
+    URL: tablero-instituciones/apicomparativa/recursos-mas-descargados/{slug}/
+    RESPUESTA: Json
+    """
+    recursos = cache.get('descargas-recursos-dependencias', None)
+    recursos_ordenados = []
+
+    if recursos is not None:
+        ky = operator.itemgetter(1)
+        try:
+         rec_dep = recursos[slug]
+        except Exception:
+            raise Http404
+
+        aux_recurso = None
+
+        for elemento_a in range(0, len(rec_dep)):
+            for index in range(0, len(rec_dep)):
+                if index > 0:
+                    if rec_dep[index]['descargas'] > rec_dep[index - 1]['descargas']:
+                        aux_recurso = rec_dep[index - 1]
+                        rec_dep[index - 1] = rec_dep[index]
+                        rec_dep[index] = aux_recurso
+
+        recursos_ordenados = rec_dep
+
+    return JsonResponse({'recursos': recursos_ordenados[:5]}, safe=False)
