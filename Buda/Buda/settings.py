@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-FQDN = os.environ.get('FQDN', 'http://0.0.0.0')
+FQDN = os.environ.get('FQDN')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -58,7 +58,7 @@ CACHES = {
     'default': {
         #'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': '{0}:{1}'.format(os.environ.get('REDIS_PORT_6379_TCP_ADDR', '0.0.0.0'), os.environ.get('REDIS_PORT_6379_TCP_PORT', '6374')),
+        'LOCATION': '{0}:{1}'.format(os.environ.get('REDIS_PORT_6379_TCP_ADDR'), os.environ.get('REDIS_PORT_6379_TCP_PORT')),
     }
 }
 
