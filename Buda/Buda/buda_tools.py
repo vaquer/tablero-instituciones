@@ -68,7 +68,7 @@ class MatTableros(object):
         de una dependencia
         Retorno: Int
         """
-        calificacion_calidad = {'N/A': 0, 'bronce': 40, 'plata': 10, 'oro': 10}
+        calificacion_calidad = {'N/A': 0, 'bronce': 40, 'plata': 50, 'oro': 60}
         calificacion = 0
 
         calificacion += calificacion_calidad[calidad]
