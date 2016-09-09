@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.core.cache import cache
 from django.conf import settings
 from django.http import JsonResponse, Http404
+from django.views.decorators.csrf import csrf_exempt
 from .buda_tools import scrapear_api_buda
 
 
@@ -45,6 +46,7 @@ def genera_resumen_dependencias(request):
     return JsonResponse({'status': 'ok'})
 
 
+@csrf_exempt
 def api_comparativa(request):
     """
     Vista que retorna el calculo
@@ -56,6 +58,7 @@ def api_comparativa(request):
     return JsonResponse({'dependencias': dependencias_cache})
 
 
+@csrf_exempt
 def api_comparativa_dependencia(request, slug):
     """
     Vista que retorna el calculo
@@ -76,6 +79,7 @@ def api_comparativa_dependencia(request, slug):
         raise Http404
 
 
+@csrf_exempt
 def recursos_mas_descargados(request):
     """
     Vista que retorna el Top 5
@@ -93,6 +97,7 @@ def recursos_mas_descargados(request):
     return JsonResponse({'recursos': recursos_ordenados}, safe=False)
 
 
+@csrf_exempt
 def recursos_mas_descargados_dep(request, slug):
     """
     Vista que retorna el Top 5
