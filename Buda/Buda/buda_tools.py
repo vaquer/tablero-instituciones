@@ -9,6 +9,7 @@ import datetime
 import operator
 from collections import OrderedDict
 from django.core.cache import cache
+from django.conf import settings
 
 
 MEDALLAS = {'bronce': 1, 'plata': 2, 'oro': 3, 'N/A': 0}
@@ -17,7 +18,7 @@ ARRAY_MEDALLAS = {0: 'N/A', 1: 'bronce', 2: 'plata', 3: 'oro'}
 JSON_DEPENDENCIAS = OrderedDict()
 JSON_RECURSOS = OrderedDict()
 JSON_RECURSOS_DEPENDENCIAS = OrderedDict()
-URL_ADELA = 'http://api.datos.gob.mx/v1/data-fusion?adela.inventory.slug={0}&page={1}'
+URL_ADELA = settings.URL_BUDA_API
 URL_CKAN = 'http://datos.gob.mx/busca/api/3/action/organization_list'
 KEY_DEPEN = 'resumen-dependendencias'
 KEY_RECUR = 'descargas-recursos'

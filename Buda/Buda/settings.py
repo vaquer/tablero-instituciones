@@ -138,3 +138,5 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = '/static/buda/'
+
+URL_BUDA_API = os.environ.get('URL_BUDA_API', 'http://api.datos.gob.mx/v1/data-fusion?adela.inventory.slug={0}&page={1}')
