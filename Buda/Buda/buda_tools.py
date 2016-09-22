@@ -208,7 +208,7 @@ class MatTableros(object):
                     except Exception, e:
                         print recurso['adela']['resource']['title'].encode('utf-8')
                         print fecha_act
-                        raise e
+                        #raise e
 
                     JSON_RECURSOS_DEPENDENCIAS[dependencia].append(json_recurso)
                     JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = recurso['analytics']['downloads']['total']['value']
