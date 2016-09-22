@@ -192,7 +192,7 @@ class MatTableros(object):
                     try:
                         fecha_act = datetime.datetime.strptime(recurso['adela']['resource']['modified'][:-8], '%Y-%m-%dT%H:%M')
                     except:
-                        print ['adela']['resource']['title'].encode('utf-8')
+                        print recurso['adela']['resource']['title'].encode('utf-8')
                         print recurso['adela']['resource']['modified']
                         pass
                     
@@ -206,7 +206,7 @@ class MatTableros(object):
                             'actualizacion': fecha_act.strftime("%d %b %Y") if fecha_act is not None else None
                         }
                     except Exception, e:
-                        print ['adela']['resource']['title'].encode('utf-8')
+                        print recurso['adela']['resource']['title'].encode('utf-8')
                         print fecha_act
                         raise e
 
