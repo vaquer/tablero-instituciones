@@ -92,7 +92,7 @@ def recursos_mas_descargados(request):
 
     if recursos is not None:
         ky = operator.itemgetter(1)
-        recursos_ordenados = sorted(recursos.items(), key=ky, reverse=True)[:5]
+        recursos_ordenados = sorted(recursos.items(), key=ky, reverse=True)[:50]
 
     return JsonResponse({'recursos': recursos_ordenados}, safe=False)
 
@@ -128,4 +128,4 @@ def recursos_mas_descargados_dep(request, slug):
 
         recursos_ordenados = rec_dep
 
-    return JsonResponse({'recursos': recursos_ordenados[:50]}, safe=False)
+    return JsonResponse({'recursos': recursos_ordenados[:5]}, safe=False)
