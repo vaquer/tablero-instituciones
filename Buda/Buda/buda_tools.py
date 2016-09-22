@@ -188,15 +188,15 @@ class MatTableros(object):
                 else:
                     calidad += 1
 
-                if recurso['analytics']['downloads']['total'] is not None:
-                    fecha_act = datetime.datetime.strptime(recurso['analytics']['downloads']['total']['date-insert'][:-6], '%Y-%m-%dT%H:%M:%S.%f')
+                if recurso['adela']['resource']['modified'] is not None:
+                    fecha_act = datetime.datetime.strptime(recurso['adela']['resource']['modified'][:-6], '%Y-%m-%dT%H:%M:%S.%f')
                     
                 try:
-                    descargas += recurso['analytics']['downloads']['total']['value']
+                    descargas += recurso['analytics']['downloads']['total'] or 0
 
                     json_recurso = {
                         'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
-                        'descargas': recurso['analytics']['downloads']['total']['value'],
+                        'descargas': recurso['analytics']['downloads']['total'] or 0,
                         'actualizacion': fecha_act.strftime("%d %b %Y")
                     }
 
@@ -214,7 +214,7 @@ class MatTableros(object):
                 if len(recurso['recommendations']) > 0:
                     recomendaciones = True
 
-                if recurso['adela']['resource']['publishdate'] is None:
+                if recurso['adela']['resource']['publishDate'] is None:
                     pendientes = True
 
                 if recurso['adela']['resource']['issued'] is not None:
@@ -226,7 +226,7 @@ class MatTableros(object):
                 except TypeError:
                     pass
 
-                apertura_array.append(recurso['adela']['dataset']['openessrating'])
+                apertura_array.append(recurso['adela']['dataset']['openessRating'])
                 contador += 1
 
         # Resultados finales
