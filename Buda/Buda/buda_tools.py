@@ -197,7 +197,7 @@ class MatTableros(object):
                     json_recurso = {
                         'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
                         'descargas': recurso['analytics']['downloads']['total'] or 0,
-                        'actualizacion': fecha_act.strftime("%d %b %Y")
+                        'actualizacion': fecha_act.strftime("%d %b %Y") if fecha_act is not None else None
                     }
 
                     JSON_RECURSOS_DEPENDENCIAS[dependencia].append(json_recurso)
