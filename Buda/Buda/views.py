@@ -128,4 +128,4 @@ def recursos_mas_descargados_dep(request, slug):
 
         recursos_ordenados = rec_dep
 
-    return JsonResponse({'recursos': recursos_ordenados[:5]}, safe=False)
+    return JsonResponse({'recursos': recursos_ordenados[:50]}, safe=False)
