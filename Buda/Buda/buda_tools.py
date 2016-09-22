@@ -189,7 +189,7 @@ class MatTableros(object):
                     calidad += 1
 
                 if recurso['adela']['resource']['modified'] is not None:
-                    fecha_act = datetime.datetime.strptime(recurso['adela']['resource']['modified'][:-7], '%Y-%m-%dT%H:%M:%S')
+                    fecha_act = datetime.datetime.strptime(recurso['adela']['resource']['modified'][:-8], '%Y-%m-%dT%H:%M')
                     
                 try:
                     descargas += recurso['analytics']['downloads']['total'] or 0
