@@ -72,15 +72,19 @@ class MatTableros(object):
         calificacion_calidad = {'N/A': 0, 'bronce': 40, 'plata': 50, 'oro': 60}
         calificacion = 0
 
+        print "Atrasos"
+        print atrasos
+        print "Recomendaciones"
+        print recomendaciones
         calificacion += calificacion_calidad[calidad]
 
-        if not atrasos:
+        if atrasos is False:
             calificacion += 15
 
         if descargas:
             calificacion += 15
 
-        if not recomendaciones:
+        if recomendaciones is False:
             calificacion += 10
 
         return calificacion / 10
@@ -174,6 +178,8 @@ class MatTableros(object):
         pendientes = False
         nombre_institucion = ''
         publicados = 0
+        publicos = 0
+        privados = 0
 
         # Se obtienen las paginas a recorrer
         vecindario_de_paginas = MatTableros.generar_paginacion(dependencia)
@@ -188,16 +194,19 @@ class MatTableros(object):
                 else:
                     calidad += 1
 
+                if recurso['adela']['dataset']['public'] is True:
+                    publicos += 1
+                else:
+                    privados += 1
+
                 if recurso['adela']['resource']['modified'] is not None:
                     try:
                         fecha_act = datetime.datetime.strptime(recurso['adela']['resource']['modified'][:-8], '%Y-%m-%dT%H:%M')
                     except:
-                        print recurso['adela']['resource']['title'].encode('utf-8')
-                        print recurso['adela']['resource']['modified']
                         pass
-                    
+
                 try:
-                    descargas += recurso['analytics']['downloads']['total'] or 0
+                    descargas += recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0
 
                     try:
                         json_recurso = {
@@ -206,18 +215,14 @@ class MatTableros(object):
                             'actualizacion': fecha_act.strftime("%d %b %Y") if fecha_act is not None else None
                         }
                     except Exception, e:
-                        print recurso['adela']['resource']['title'].encode('utf-8')
-                        print fecha_act
-
                         json_recurso = {
                             'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
                             'descargas': recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0,
                             'actualizacion': None
                         }
-                        #raise e
 
                     JSON_RECURSOS_DEPENDENCIAS[dependencia].append(json_recurso)
-                    JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = recurso['analytics']['downloads']['total']['value']
+                    JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = recurso['analytics']['downloads']['total']
                 except TypeError:
                     descargas += 0
                     JSON_RECURSOS_DEPENDENCIAS[dependencia].append({
@@ -230,11 +235,10 @@ class MatTableros(object):
                 if len(recurso['recommendations']) > 0:
                     recomendaciones = True
 
-                if recurso['adela']['resource']['publishDate'] is None:
-                    pendientes = True
-
                 if recurso['adela']['resource']['issued'] is not None:
                     publicados += 1
+                else:
+                    pendientes = True
 
                 try:
                     if not nombre_institucion:
@@ -267,7 +271,9 @@ class MatTableros(object):
             'publicados': publicados,
             'sin-publicar': contador - publicados,
             'calificacion': calificacion,
-            'ranking': 0
+            'ranking': 0,
+            'publicos': publicos,
+            'privados': privados
         } if len(json_buda.get('results', [])) > 1 else {
             'institucion': nombre_institucion or dependencia,
             'apertura': 0,
@@ -278,6 +284,8 @@ class MatTableros(object):
             'total': 0,
             'calificacion': 0,
             'ranking': 0,
+            'publicos': 0,
+            'privados': 0,
             'slug': dependencia
         }
 

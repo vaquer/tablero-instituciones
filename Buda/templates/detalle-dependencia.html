@@ -240,16 +240,11 @@
                 html += '<tr><td>' + recommendations.categoria + '</td><td><a href="/conjuntos/'+ resourceId +'/edit">' + resourceTitle + '</a></td><td><a href="'+urlError+'">' + nameError + '</a></td><td><a href="#">Notifica</a></td></tr>';
                 $('#table-recommendations tr').first().after(html);
               });
+             });
 
-              //Obtengo public
-              var isPublic = value.adela.dataset.public;
-              if (isPublic == true) {
-                isPublicTrue = isPublicTrue + 1;
-              } else {
-                isPublicFalse = isPublicFalse + 1;
-              }
-
-            });
+            //Obtengo public
+            var isPublicTrue = dataApiOPI.publicos,
+                isPublicFalse = dataApiOPI.privados;
 
             $("#calidadDatosHtml").text(dataApiOPI.calidad.charAt(0).toUpperCase() + dataApiOPI.calidad.slice(1));
             $("#stars-raiting").attr("data-rating", dataApiOPI.apertura);
