@@ -47,8 +47,8 @@ Una vez construida la imagen Docker de la herramienta, ya es posible generar el 
 Los comandos de consola para correr la aplicacion con toda la arquitectura necesaria son los siguientes:
 ```
   docker run --name redistableros -p 6379:6379 -d redis
-  docker run --name tableros -e SECRET_KEY="{{secret_key}}" --link redistableros:redis -e FQDN="http://tudominio.com/" -e DEBUG=False -p 80:80 tableros
-  docker run --name cron-tableros -e SECRET_KEY="{{secret_key}}" --link redistableros:redis -e FQDN="http://tudominio.com/" -e DEBUG=False -p 80:80 cron-tableros
+  docker run --name tableros -e SECRET_KEY="{{secret_key}}" --link redistableros:redis -e URL_BUDA_API='http://api.datos.gob.mx/v1/data-fusion?adela.inventory.slug={0}&page={1}' -e FQDN="http://tudominio.com/" -e DEBUG='False' -p 80:80 tableros
+  docker run --name cron-tableros -e SECRET_KEY="{{secret_key}}" --link redistableros:redis -e URL_BUDA_API='http://api.datos.gob.mx/v1/data-fusion?adela.inventory.slug={0}&page={1}' -e FQDN="http://tudominio.com/" -e DEBUG='False' -p 80:80 cron-tableros
 ```
 
 Despues en la barra del navegador:
