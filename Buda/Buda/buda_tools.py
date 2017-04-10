@@ -19,7 +19,7 @@ JSON_DEPENDENCIAS = OrderedDict()
 JSON_RECURSOS = OrderedDict()
 JSON_RECURSOS_DEPENDENCIAS = OrderedDict()
 URL_ADELA = settings.URL_BUDA_API
-URL_CKAN = 'http://datos.gob.mx/busca/api/3/action/organization_list'
+URL_CKAN = 'https://datos.gob.mx/busca/api/3/action/organization_list'
 KEY_DEPEN = 'resumen-dependendencias'
 KEY_RECUR = 'descargas-recursos'
 KEY_DEPEND_RECURSOS = 'descargas-recursos-dependencias'
@@ -237,7 +237,7 @@ class MatTableros(object):
                 if len(recurso['recommendations']) > 0:
                     recomendaciones = True
 
-                if recurso['adela']['resource']['issued'] is not None:
+                if recurso['ckan'].get('resource', None) is not None:
                     publicados += 1
                 else:
                     pendientes = True
