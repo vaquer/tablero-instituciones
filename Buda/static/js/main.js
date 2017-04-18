@@ -33,7 +33,7 @@ $(document).ready(function() {
     //Datos mas descargados
     $.ajax({
       url: urlDescargasDatos,
-      async: false,
+      // async: false,
       type: 'POST',
       success: function(data) {
         if(data.recursos === null){
@@ -82,7 +82,7 @@ $(document).ready(function() {
         },
       "ajax": {
         "url": urlDataSet,
-        "async": false,
+        // "async": false,
         "type": 'POST',
         "dataSrc": function ( json ) {
           if(json.dependencias === null){
