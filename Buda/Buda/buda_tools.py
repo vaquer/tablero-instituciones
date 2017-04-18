@@ -274,11 +274,11 @@ class MatTableros(object):
         calificacion = MatTableros.genera_calificacion(calidad, pendientes, descargas > 0, recomendaciones)
 
         return {
-            'institucion': JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] or dependencia,
+            'institucion': JSON_DEPENDENCIAS_INFO[dependencia].get('titulo', None) or nombre_institucion,
             'apertura': apertura,
             'calidad': calidad,
             'descargas': descargas,
-            'slug': JSON_DEPENDENCIAS_INFO[dependencia]['slug'] or dependencia,
+            'slug': JSON_DEPENDENCIAS_INFO[dependencia].get('slug', None) or dependencia,
             'total': contador,
             'publicados': publicados,
             'sin-publicar': contador - publicados,
