@@ -40,9 +40,10 @@ $(document).ready(function() {
           alert('Sentimos los incovenientes. Estamos actualizando los datos. Intenta mas tarde.');
           return false;
         }
+        console.log(data);
         $.each(data.recursos, function(key, value){
           var htmlDatos = '';
-          htmlDatos += '<tr><td class="datosTitle" title="'+value[0]+'">' + value[0] + '</td><td class="text-center">' + value[1].toLocaleString('en') + '</td></tr>';
+          htmlDatos += '<tr><td class="datosTitle" title="'+value[0]+'"><a href="https://datos.gob.mx/busca/dataset/' + value[3] + '/resource/' + value[2] + '" >' + value[0] + '</a></td><td class="text-center">' + value[1].toLocaleString('en') + '</td></tr>';
           $('#table-datos tr').last().after(htmlDatos);
         });
       },
@@ -109,11 +110,11 @@ $(document).ready(function() {
           });
 
           var htmlDown = '';
-          htmlDown += '<tr><td class="datosTitle" title="'+top1.institucion+'">' + top1.institucion + '</td><td class="text-center">' + top1.descargas.toLocaleString('en') + '</td></tr>';
-          htmlDown += '<tr><td class="datosTitle" title="'+top2.institucion+'">' + top2.institucion + '</td><td class="text-center">' + top2.descargas.toLocaleString('en') + '</td></tr>';
-          htmlDown += '<tr><td class="datosTitle" title="'+top3.institucion+'">' + top3.institucion + '</td><td class="text-center">' + top3.descargas.toLocaleString('en') + '</td></tr>';
-          htmlDown += '<tr><td class="datosTitle" title="'+top4.institucion+'">' + top4.institucion + '</td><td class="text-center">' + top4.descargas.toLocaleString('en') + '</td></tr>';
-          htmlDown += '<tr><td class="datosTitle" title="'+top5.institucion+'">' + top5.institucion + '</td><td class="text-center">' + top5.descargas.toLocaleString('en') + '</td></tr>';
+          htmlDown += '<tr><td class="datosTitle" title="'+top1.institucion+'"><a href="https://datos.gob.mx/busca/organization/' + top1.slug + '">' + top1.institucion + '</a></td><td class="text-center">' + top1.descargas.toLocaleString('en') + '</td></tr>';
+          htmlDown += '<tr><td class="datosTitle" title="'+top2.institucion+'"><a href="https://datos.gob.mx/busca/organization/' + top2.slug + '">' + top2.institucion + '</a></td><td class="text-center">' + top2.descargas.toLocaleString('en') + '</td></tr>';
+          htmlDown += '<tr><td class="datosTitle" title="'+top3.institucion+'"><a href="https://datos.gob.mx/busca/organization/' + top3.slug + '">' + top3.institucion + '</a></td><td class="text-center">' + top3.descargas.toLocaleString('en') + '</td></tr>';
+          htmlDown += '<tr><td class="datosTitle" title="'+top4.institucion+'"><a href="https://datos.gob.mx/busca/organization/' + top4.slug + '">' + top4.institucion + '</a></td><td class="text-center">' + top4.descargas.toLocaleString('en') + '</td></tr>';
+          htmlDown += '<tr><td class="datosTitle" title="'+top5.institucion+'"><a href="https://datos.gob.mx/busca/organization/' + top5.slug + '">' + top5.institucion + '</a></td><td class="text-center">' + top5.descargas.toLocaleString('en') + '</td></tr>';
           $('#table-downloads tr').last().after(htmlDown);
 
           $.each(json.dependencias,function(key, value){

@@ -14,9 +14,12 @@
 
     <!-- dataTables jquery plugin -->
     <link rel="stylesheet" type="text/css" href="{% static "css/jquery.dataTables.css" %}">
-
+    <link rel="stylesheet" type="text/css" href="https://datos.gob.mx/css/style.css">
     <!-- Custom CSS -->
-    <link href="{% static "css/opi_main.css" %}" rel="stylesheet">
+    {% comment %}
+      <link href="{% static "css/opi_main.css" %}" rel="stylesheet">
+      
+    {% endcomment %}
 
     <!-- Custom Fonts -->
     <link href="{% static "css/font-awesome/font-awesome.min.css" %}" rel="stylesheet">
@@ -273,8 +276,9 @@
               var monthIndex = dateDownload.getMonth();
               var year = dateDownload.getFullYear();
               var htmlDown = '';
+              console.log(item);
               if(item.descargas > 0){
-                htmlDown += '<tr><td>' + item.recurso + '</td><td>' + item.actualizacion + '</td><td class="text-center">' + item.descargas + '</td></tr>';
+                htmlDown += '<tr><td><a href="https://datos.gob.mx/busca/dataset/' + item.dataset + '/resource/' + item.id + '" >' + item.recurso + '</a></td><td>' + item.actualizacion + '</td><td class="text-center">' + item.descargas + '</td></tr>';
                 $('#table-downloads tr').last().after(htmlDown);
               }
             });
