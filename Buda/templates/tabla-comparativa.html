@@ -14,7 +14,11 @@
     <!-- dataTables jquery plugin -->
     <link rel="stylesheet" type="text/css" href="{% static "css/jquery.dataTables.css" %}">
     <!-- Custom CSS -->
-    <link href="{% static "css/opi_main.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/opi_main.css" %}">
+    {% comment %}
+    <link rel="stylesheet" href="/static/buda/css/opi_main.css?232145">
+      <link rel="stylesheet" type="text/css" href="https://datos.gob.mx/css/style.css">
+    {% endcomment %}
     <!-- Custom Fonts -->
     <link href="{% static "css/font-awesome/font-awesome.min.css" %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/raty/2.7.0/jquery.raty.min.css">
@@ -37,7 +41,11 @@
     <dgm-navbar></dgm-navbar>
     <div class="gray_back">
       <div class="container">
-        <h5><strong>datos.gob.mx</strong></h5><hr>
+        <h5 style="font-size: 22px;"><strong>Tablero de seguimiento institucional | BETA</strong></h5><hr>
+        {% comment %}
+          <h5><strong>datos.gob.mx</strong></h5><hr>           
+        {% endcomment %}
+        <p class="copy">En esta sección podrás dar seguimiento al cumplimineto de la <a href="https://datos.gob.mx/guia/">Política de Datos Abiertos</a> por parte de las instituciones del Gobierno de la República'.</p>
         <div class="row">
           <!-- <div class="col-sm-3">
             <span>visitas totales</span>
@@ -48,11 +56,11 @@
             <p class="cantidades-tabla" id="downloadsTotal"></p>
           </div>
           <div class="col-sm-4">
-            <span>Recursos publicados totales</span>
+            <span>Total de Datos Abiertos Publicados</span>
             <p class="cantidades-tabla" id="resourcesTotal"></p>
           </div>
           <div class="col-sm-4">
-            <span>Instituciones en datos.gob.mx</span>
+            <span>Total de instituciones publicando en datos.gob.mx</span>
             <p class="cantidades-tabla" id="dependencesTotal"></p>
           </div>
         </div>
@@ -63,8 +71,8 @@
               <table class="table" id="top-5-datos">
                 <thead>
                   <tr>
-                    <th>Datos</th>
-                    <th class="text-center">Descargas</th>
+                    <th style="font-weight: bold;">Datos</th>
+                    <th style="font-weight: bold;" class="text-center">Descargas</th>
                   </tr>
                 </thead>
                 <tbody id="table-datos">
@@ -79,8 +87,8 @@
               <table class="table" id="top-5-institucion">
                 <thead>
                   <tr>
-                    <th>Institución</th>
-                    <th class="text-center">Descargas</th>
+                    <th style="font-weight: bold;">Institución</th>
+                    <th style="font-weight: bold;" class="text-center">Descargas</th>
                   </tr>
                 </thead>
                 <tbody id="table-downloads">
@@ -93,7 +101,7 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container" style="padding-left: 0px; padding-right: 0px;">
       <h2>Tablero de instituciones de la APF</h2>
       <br>
       <i class="fa fa-search fa-2x"></i><input type="text" id="searchbox" placeholder="Busca una institución">
@@ -101,12 +109,16 @@
         <table class="table display" id="apf_table" cellspacing="0" width="100%">
           <thead>
             <tr class="text-center">
-              <td>Institución</td>
-              <td>Ranking</td>
-              <td>Datos</td>
-              <td>Calif. Apertura</td>
-              <td>Descargas</td>
-              <td class="lineTd">Calidad<br><span class="high-light-dashboard">BETA </span><i class="fa fa-question-circle" data-toggle="tooltip" title="No existen datos"></i></td>
+              <td style="font-weight: bold;">Institución</td>
+              <td style="font-weight: bold;">Ranking</td>
+              <td style="font-weight: bold;">Datos</td>
+              {% comment %}
+              <td style="font-weight: bold;">Calif. Apertura</td>
+              {% endcomment %}
+              <td style="font-weight: bold;">Descargas</td>
+              {% comment %}
+              <td style="font-weight: bold;" class="lineTd">Calidad<br><span class="high-light-dashboard">BETA </span><i class="fa fa-question-circle" data-toggle="tooltip" title="No existen datos"></i></td>
+              {% endcomment %}
             </tr>
           </thead>
         </table>

@@ -70,9 +70,10 @@ $(document).ready(function() {
       "bLengthChange": false,
       "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
         $('td:eq(0)', nRow).addClass("depenTitle").attr("title",aData.institucion).attr("tag", aData.slug);
-        $('td:eq(3)', nRow).attr( "data-score",aData.apertura ).addClass("rating text-center").html("");
+        //$('td:eq(3)', nRow).attr( "data-score",aData.apertura ).addClass("rating text-center").html("");
         $('td:eq(1), td:eq(2), td:eq(4)', nRow).addClass("text-center");
-        $('td:eq(5)', nRow).addClass("starsTd text-center");
+        $('td:eq(3), td:eq(2), td:eq(4)', nRow).addClass("text-center");
+        //$('td:eq(5)', nRow).addClass("starsTd text-center");
       },
       drawCallback: function(settings){
             var api = this.api();
@@ -132,9 +133,9 @@ $(document).ready(function() {
           { "data": "institucion" },
           { "data": "ranking" },
           { "data": "total", render: $.fn.dataTable.render.number( ',', '.', 0 ) },
-          { "data": "apertura" },
-          { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 )  },
-          { "data": "calidad" }
+          //{ "data": "apertura" },
+          { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 )  }
+          //{ "data": "calidad" }
       ]
     });
 

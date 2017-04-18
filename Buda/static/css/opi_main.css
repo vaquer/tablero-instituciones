@@ -331,3 +331,5 @@ svg { overflow: visible !important; }
 
 .table-500 { height: 500px; }
 .table-400 { height: 400px; }
+
+p.copy { padding: 0px; font-size: 17px; margin-bottom: 35px;}
