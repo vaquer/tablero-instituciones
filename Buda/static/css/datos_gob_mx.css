@@ -76,8 +76,11 @@ ng\:form {
 .ng-anchor {
     position: absolute;
 }
-
 /*   LITERAL COPY FROM https://datos.gob.mx INLINE STYLES :: end    */
+
+.empty-space {
+    margin: 2em;
+}
 
 .dataTables_filter {
     display: none;

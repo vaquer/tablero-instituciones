@@ -9,7 +9,6 @@
     <link rel="shortcut icon" href="">
 
     <!-- Bootstrap core -->
-    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- dataTables jquery plugin -->
     <link rel="stylesheet" type="text/css" href="{% static "css/jquery.dataTables.css" %}">
@@ -48,7 +47,6 @@
 <body class="front">
 <div id="main" class="ng-scope">
     <dgm-navbar></dgm-navbar>
-
     <div id="container" class="ng-scope">
         <section id="landing-data" class="section-data ng-scope">
             <div class="container-fluid ng-scope">
@@ -62,6 +60,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="empty-space"></div>
                 <div class="row">
                     <div class="col-md-4">
                         <p class="author ng-binding">
@@ -88,6 +87,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="empty-space"></div>
                 <div class="row">
                     <div class="col-md-6">
                         <p class="author ng-binding">
@@ -160,6 +160,7 @@
             </div>
         </section>
     </div>
+    <dgm-footer></dgm-footer>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static "js/bootstrap.min.js" %}"></script>
@@ -170,8 +171,6 @@
     <!-- Custom JS -->
     <script src="{% static "bower_components/webcomponentsjs/webcomponents-lite.min.js" %}"></script>
     <script src="{% static "js/main.js" %}" type="text/javascript"></script>
-
-    <dgm-footer></dgm-footer>
 </div>
 </body>
 </html>
