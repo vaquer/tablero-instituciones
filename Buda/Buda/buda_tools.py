@@ -18,6 +18,7 @@ ARRAY_MEDALLAS = {0: 'N/A', 1: 'bronce', 2: 'plata', 3: 'oro'}
 JSON_DEPENDENCIAS = OrderedDict()
 JSON_RECURSOS = OrderedDict()
 JSON_RECURSOS_DEPENDENCIAS = OrderedDict()
+JSON_DEPENDENCIAS_INFO = OrderedDict()
 URL_ADELA = settings.URL_BUDA_API
 URL_CKAN = 'https://datos.gob.mx/busca/api/3/action/organization_list'
 KEY_DEPEN = 'resumen-dependendencias'
@@ -184,11 +185,17 @@ class MatTableros(object):
         # Se obtienen las paginas a recorrer
         vecindario_de_paginas = MatTableros.generar_paginacion(dependencia)
         JSON_RECURSOS_DEPENDENCIAS[dependencia] = []
+        JSON_DEPENDENCIAS_INFO[dependencia] = {}
         for pagina in vecindario_de_paginas:
             json_buda = NetWorkTablero.llamar_a_buda(dependencia, pagina)
 
             for recurso in json_buda.get('results', []):
                 fecha_act = None
+                # Datos de la dependencia
+                if JSON_DEPENDENCIAS_INFO[dependencia].get('slug', None):
+                    JSON_DEPENDENCIAS_INFO[dependencia]['slug'] = None if recurso['ckan']['dataset'] is None else recurso['ckan']['dataset']['organization'].get('name', None)
+                    JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] = None if recurso['ckan']['dataset'] is None else recurso['ckan']['dataset']['organization'].get('title', None)
+
                 if recurso['calificacion'] != u'none':
                     calidad += MEDALLAS[recurso['calificacion']]
                 else:
@@ -223,8 +230,11 @@ class MatTableros(object):
                             'actualizacion': None
                         }
 
+                    json_recurso['id'] = '' if recurso['ckan']['resource'] is None or type(recurso['ckan']['resource']) == list else recurso['ckan']['resource'].get('id', None)
+                    json_recurso['dataset'] = '' if recurso['ckan']['dataset'] is None else recurso['ckan']['dataset'].get('name', None)
+
                     JSON_RECURSOS_DEPENDENCIAS[dependencia].append(json_recurso)
-                    JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = recurso['analytics']['downloads']['total']
+                    JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = json_recurso
                 except TypeError:
                     descargas += 0
                     JSON_RECURSOS_DEPENDENCIAS[dependencia].append({
@@ -264,18 +274,18 @@ class MatTableros(object):
         calificacion = MatTableros.genera_calificacion(calidad, pendientes, descargas > 0, recomendaciones)
 
         return {
-            'institucion': nombre_institucion or dependencia,
+            'institucion': JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] or dependencia,
             'apertura': apertura,
             'calidad': calidad,
             'descargas': descargas,
-            'slug': dependencia,
+            'slug': JSON_DEPENDENCIAS_INFO[dependencia]['slug'] or dependencia,
             'total': contador,
             'publicados': publicados,
             'sin-publicar': contador - publicados,
             'calificacion': calificacion,
             'ranking': 0,
             'publicos': publicos,
-            'privados': privados
+            'privados': privados,
         } if len(json_buda.get('results', [])) > 1 else {
             'institucion': nombre_institucion or dependencia,
             'apertura': 0,
@@ -304,11 +314,13 @@ def scrapear_api_buda():
         count_dependencias += 1
         JSON_DEPENDENCIAS[dep] = MatTableros.generar_tablero(dep)
 
-    # Se guarda en cache por 27 horas
+    # Se crea el ranking de las dependencias
     ranking = MatTableros.calcula_ranking(JSON_DEPENDENCIAS)
+    # Se guarda en cache por 27 horas
     cache.set(KEY_DEPEN, ranking, CACHE_TTL)
     cache.set(KEY_RECUR, JSON_RECURSOS, CACHE_TTL)
     cache.set(KEY_DEPEND_RECURSOS, JSON_RECURSOS_DEPENDENCIAS, CACHE_TTL)
+    #cache.set(KEY_DEPENDENCIA_INFO, JSON_DEPENDENCIAS_INFO, CACHE_TTL)
 
     print "************************Terminan calculos*************************************"
     print "DEPENDENCIAS PROCESADAS: {0}".format(str(count_dependencias))
