@@ -1,0 +1,20 @@
+/*   LITERAL COPY FROM https://datos.gob.mx/busca/dataset/estaciones-de-servicio-gasolineras-y-precios-comerciales-de-gasolina-y-diesel INLINE STYLES :: begin    */
+body {
+    transition: opacity ease-in 0.2s;
+}
+
+body[unresolved] {
+    opacity: 0;
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+/*   LITERAL COPY FROM https://datos.gob.mx/busca/dataset/estaciones-de-servicio-gasolineras-y-precios-comerciales-de-gasolina-y-diesel INLINE STYLES :: end    */
+
+.beta-highlight {
+    color: #0c9 !important;
+}
+
+.empty-space {
+    margin: 2em;
+}
