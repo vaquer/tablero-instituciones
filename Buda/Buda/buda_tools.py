@@ -193,9 +193,12 @@ class MatTableros(object):
             for recurso in json_buda.get('results', []):
                 fecha_act = None
                 # Datos de la dependencia
-                if JSON_DEPENDENCIAS_INFO[dependencia].get('slug', None):
+                if JSON_DEPENDENCIAS_INFO[dependencia].get('slug', None) is None or JSON_DEPENDENCIAS_INFO[dependencia].get('slug', None) == '':
                     JSON_DEPENDENCIAS_INFO[dependencia]['slug'] = None if recurso['ckan']['dataset'] is None else recurso['ckan']['dataset']['organization'].get('name', None)
                     JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] = None if recurso['ckan']['dataset'] is None else recurso['ckan']['dataset']['organization'].get('title', None)
+                    
+                    if JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] == None or JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] == '':
+                        JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] = dependencia.replace('-', ' ').upper()
 
                 if recurso['calificacion'] != u'none':
                     calidad += MEDALLAS[recurso['calificacion']]
@@ -257,6 +260,7 @@ class MatTableros(object):
                     if not nombre_institucion:
                         nombre_institucion = recurso['ckan']['dataset']['organization']['title']
                 except (TypeError, KeyError):
+                    nombre_institucion = dependencia
                     pass
 
                 apertura_array.append(recurso['adela']['dataset']['openessRating'])
@@ -310,7 +314,7 @@ def scrapear_api_buda():
     para guardarlo en cache
     """
     count_dependencias = 0
-    for dep in NetWorkTablero.recuperar_dependencias():
+    for dep in ['ayuntamiento-de-morelia']:
         print "Dependencia: {0}".format(dep)
         count_dependencias += 1
         JSON_DEPENDENCIAS[dep] = MatTableros.generar_tablero(dep)
