@@ -88,11 +88,17 @@ def recursos_mas_descargados(request):
     RESPUESTA: Json
     """
     recursos = cache.get('descargas-recursos', None)
-    recursos_ordenados = []
+    recursos_ordenados = recursos_ordenados_aux = []
+    ordenador = {}
 
     if recursos is not None:
+        for key, value in recursos.items():
+            ordenador[key] = value['descargas']
+
         ky = operator.itemgetter(1)
-        recursos_ordenados = sorted(recursos.items(), key=ky, reverse=True)[:5]
+        recursos_ordenados_aux = sorted(ordenador.items(), key=ky, reverse=True)[:5]
+
+        recursos_ordenados = [[recursos[key[0]]['recurso'], recursos[key[0]]['descargas'], recursos[key[0]]['id'], recursos[key[0]]['dataset']] for key in recursos_ordenados_aux]
 
     return JsonResponse({'recursos': recursos_ordenados}, safe=False)
 

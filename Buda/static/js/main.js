@@ -33,16 +33,17 @@ $(document).ready(function() {
     //Datos mas descargados
     $.ajax({
       url: urlDescargasDatos,
-      async: false,
+      // async: false,
       type: 'POST',
       success: function(data) {
         if(data.recursos === null){
           alert('Sentimos los incovenientes. Estamos actualizando los datos. Intenta mas tarde.');
           return false;
         }
+        console.log(data);
         $.each(data.recursos, function(key, value){
           var htmlDatos = '';
-          htmlDatos += '<tr><td class="datosTitle" title="'+value[0]+'">' + value[0] + '</td><td class="text-center">' + value[1].toLocaleString('en') + '</td></tr>';
+          htmlDatos += '<tr><td class="datosTitle" title="'+value[0]+'"><a href="https://datos.gob.mx/busca/dataset/' + value[3] + '/resource/' + value[2] + '" >' + value[0] + '</a></td><td class="text-center">' + value[1].toLocaleString('en') + '</td></tr>';
           $('#table-datos tr').last().after(htmlDatos);
         });
       },
@@ -70,9 +71,10 @@ $(document).ready(function() {
       "bLengthChange": false,
       "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
         $('td:eq(0)', nRow).addClass("depenTitle").attr("title",aData.institucion).attr("tag", aData.slug);
-        $('td:eq(3)', nRow).attr( "data-score",aData.apertura ).addClass("rating text-center").html("");
+        //$('td:eq(3)', nRow).attr( "data-score",aData.apertura ).addClass("rating text-center").html("");
         $('td:eq(1), td:eq(2), td:eq(4)', nRow).addClass("text-center");
-        $('td:eq(5)', nRow).addClass("starsTd text-center");
+        $('td:eq(3), td:eq(2), td:eq(4)', nRow).addClass("text-center");
+        //$('td:eq(5)', nRow).addClass("starsTd text-center");
       },
       drawCallback: function(settings){
             var api = this.api();
@@ -81,7 +83,7 @@ $(document).ready(function() {
         },
       "ajax": {
         "url": urlDataSet,
-        "async": false,
+        // "async": false,
         "type": 'POST',
         "dataSrc": function ( json ) {
           if(json.dependencias === null){
@@ -108,11 +110,11 @@ $(document).ready(function() {
           });
 
           var htmlDown = '';
-          htmlDown += '<tr><td class="datosTitle" title="'+top1.institucion+'">' + top1.institucion + '</td><td class="text-center">' + top1.descargas.toLocaleString('en') + '</td></tr>';
-          htmlDown += '<tr><td class="datosTitle" title="'+top2.institucion+'">' + top2.institucion + '</td><td class="text-center">' + top2.descargas.toLocaleString('en') + '</td></tr>';
-          htmlDown += '<tr><td class="datosTitle" title="'+top3.institucion+'">' + top3.institucion + '</td><td class="text-center">' + top3.descargas.toLocaleString('en') + '</td></tr>';
-          htmlDown += '<tr><td class="datosTitle" title="'+top4.institucion+'">' + top4.institucion + '</td><td class="text-center">' + top4.descargas.toLocaleString('en') + '</td></tr>';
-          htmlDown += '<tr><td class="datosTitle" title="'+top5.institucion+'">' + top5.institucion + '</td><td class="text-center">' + top5.descargas.toLocaleString('en') + '</td></tr>';
+          htmlDown += '<tr><td class="datosTitle" title="'+top1.institucion+'"><a href="https://datos.gob.mx/busca/organization/' + top1.slug + '">' + top1.institucion + '</a></td><td class="text-center">' + top1.descargas.toLocaleString('en') + '</td></tr>';
+          htmlDown += '<tr><td class="datosTitle" title="'+top2.institucion+'"><a href="https://datos.gob.mx/busca/organization/' + top2.slug + '">' + top2.institucion + '</a></td><td class="text-center">' + top2.descargas.toLocaleString('en') + '</td></tr>';
+          htmlDown += '<tr><td class="datosTitle" title="'+top3.institucion+'"><a href="https://datos.gob.mx/busca/organization/' + top3.slug + '">' + top3.institucion + '</a></td><td class="text-center">' + top3.descargas.toLocaleString('en') + '</td></tr>';
+          htmlDown += '<tr><td class="datosTitle" title="'+top4.institucion+'"><a href="https://datos.gob.mx/busca/organization/' + top4.slug + '">' + top4.institucion + '</a></td><td class="text-center">' + top4.descargas.toLocaleString('en') + '</td></tr>';
+          htmlDown += '<tr><td class="datosTitle" title="'+top5.institucion+'"><a href="https://datos.gob.mx/busca/organization/' + top5.slug + '">' + top5.institucion + '</a></td><td class="text-center">' + top5.descargas.toLocaleString('en') + '</td></tr>';
           $('#table-downloads tr').last().after(htmlDown);
 
           $.each(json.dependencias,function(key, value){
@@ -132,9 +134,9 @@ $(document).ready(function() {
           { "data": "institucion" },
           { "data": "ranking" },
           { "data": "total", render: $.fn.dataTable.render.number( ',', '.', 0 ) },
-          { "data": "apertura" },
-          { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 )  },
-          { "data": "calidad" }
+          //{ "data": "apertura" },
+          { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 )  }
+          //{ "data": "calidad" }
       ]
     });
 

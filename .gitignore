@@ -1,2 +1,12 @@
 *.pyc
 Buda/functional_test.py
+
+*.sqlite3
+
+.idea
+.vscode
+
+**/*.log
+
+.DS_Store
+Thumbs.db
