@@ -53,6 +53,7 @@ class NetWorkTablero(object):
         Parametro: (String)dependencia, (Int)pagina
         Retorno: Json Dict
         """
+
         respuesta_buda = requests.get(URL_ADELA.format(depen, str(pagina)))
         return respuesta_buda.json()
 
@@ -255,7 +256,7 @@ class MatTableros(object):
                 try:
                     if not nombre_institucion:
                         nombre_institucion = recurso['ckan']['dataset']['organization']['title']
-                except TypeError:
+                except (TypeError, KeyError):
                     pass
 
                 apertura_array.append(recurso['adela']['dataset']['openessRating'])
