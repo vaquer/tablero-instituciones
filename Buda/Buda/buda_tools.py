@@ -314,7 +314,7 @@ def scrapear_api_buda():
     para guardarlo en cache
     """
     count_dependencias = 0
-    for dep in ['ayuntamiento-de-morelia']:
+    for dep in NetWorkTablero.recuperar_dependencias():
         print "Dependencia: {0}".format(dep)
         count_dependencias += 1
         JSON_DEPENDENCIAS[dep] = MatTableros.generar_tablero(dep)
