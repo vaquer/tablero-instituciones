@@ -194,9 +194,13 @@ class MatTableros(object):
                 fecha_act = None
                 # Datos de la dependencia
                 if JSON_DEPENDENCIAS_INFO[dependencia].get('slug', None) is None or JSON_DEPENDENCIAS_INFO[dependencia].get('slug', None) == '':
-                    JSON_DEPENDENCIAS_INFO[dependencia]['slug'] = None if recurso['ckan']['dataset'] is None else recurso['ckan']['dataset']['organization'].get('name', None)
-                    JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] = None if recurso['ckan']['dataset'] is None else recurso['ckan']['dataset']['organization'].get('title', None)
-                    
+                    if recurso['ckan'].get('dataset', None) and recurso['ckan'].get('dataset', {}).get('organization', None):
+                        JSON_DEPENDENCIAS_INFO[dependencia]['slug'] = None if recurso['ckan']['dataset'] is None else recurso['ckan']['dataset']['organization'].get('name', None)
+                        JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] = None if recurso['ckan']['dataset'] is None else recurso['ckan']['dataset']['organization'].get('title', None)
+                    else:
+                        JSON_DEPENDENCIAS_INFO[dependencia]['slug'] = dependencia
+                        JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] = dependencia.replace('-', ' ').upper()
+
                     if JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] == None or JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] == '':
                         JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] = dependencia.replace('-', ' ').upper()
 
