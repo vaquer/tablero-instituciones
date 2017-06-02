@@ -129,3 +129,14 @@ ng\:form {
     background-color: #000;
     border-radius: 4px;
 }
+
+.table-header {
+    margin-top: -3%;
+    font-weight: bold;
+}
+
+.totals {
+    color: #0c9;
+    font-size: 3em;
+    font-weight: bold;
+}

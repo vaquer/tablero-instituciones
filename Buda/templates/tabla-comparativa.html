@@ -21,10 +21,12 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="//datos.gob.mx/css/style.css">
-    <link rel="stylesheet" href="{% static "css/datos_gob_mx.css" %}">
+    <link rel="stylesheet" href="/static/buda/css/datos_gob_mx.css?135105">
 
     {% comment %}
+        <link rel="stylesheet" href="{% static "css/datos_gob_mx.css" %}">
         <link rel="stylesheet" href="/static/buda/css/datos_gob_mx.css?18153744">
+
         <link rel="stylesheet" type="text/css" href="https://datos.gob.mx/css/style.css">
         <link rel="stylesheet" href="{% static "css/opi_main.css" %}">
         <link rel="stylesheet" href="/static/buda/css/opi_main.css?18151357">
@@ -69,43 +71,43 @@
                 <div class="empty-space"></div>
                 <div class="row">
                     <div class="col-md-4">
+                        <div class="title ng-binding">
+                            <h1 id="downloadsTotal" class="totals"></h1>
+                        </div>
                         <p class="author ng-binding">
                             <span class="ng-binding">Descargas totales</span>
                         </p>
-                        <div class="title ng-binding">
-                            <h1 id="downloadsTotal"></h1>
-                        </div>
                     </div>
                     <div class="col-md-4">
+                        <div class="title ng-binding">
+                            <h1 id="resourcesTotal" class="totals"></h1>
+                        </div>
                         <p class="author ng-binding">
                             <span class="ng-binding">Total de Datos Abiertos Publicados</span>
                         </p>
-                        <div class="title ng-binding">
-                            <h1 id="resourcesTotal"></h1>
-                        </div>
                     </div>
                     <div class="col-md-4">
+                        <div class="title ng-binding">
+                            <h1 id="dependencesTotal" class="totals"></h1>
+                        </div>
                         <p class="author ng-binding">
                             <span class="ng-binding">Total de instituciones publicando en datos.gob.mx</span>
                         </p>
-                        <div class="title ng-binding">
-                            <h1 id="dependencesTotal"></h1>
-                        </div>
                     </div>
                 </div>
                 <div class="empty-space"></div>
                 <div class="row">
                     <div class="col-md-6">
-                        <p class="author ng-binding">
-                            <span class="ng-binding">Top 5 - Datos más descargados</span>
-                        </p>
                         <div class="data-table">
+                            <p class="author ng-binding table-header">
+                                <span class="ng-binding">TOP 5 - Datos más descargados</span>
+                            </p>
                             <table class="table" id="top-5-datos">
                                 <thead class="hidden-xs hidden-sm">
-                                <tr>
+                                <!--<tr>
                                     <th>Datos</th>
                                     <th class="text-center">Descargas</th>
-                                </tr>
+                                </tr>-->
                                 </thead>
                                 <tbody id="table-datos">
                                 <tr class="hidden-xs hidden-sm ng-scope"></tr>
@@ -114,16 +116,16 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <p class="author ng-binding">
-                            <span class="ng-binding">Top 5 - Instituciones con más descargas</span>
-                        </p>
                         <div class="data-table">
+                            <p class="author ng-binding table-header">
+                                <span class="ng-binding">TOP 5 - Instituciones con más descargas</span>
+                            </p>
                             <table class="table" id="top-5-institucion">
                                 <thead class="hidden-xs hidden-sm">
-                                <tr>
+                                <!--<tr>
                                     <th>Institución</th>
                                     <th class="text-center">Descargas</th>
-                                </tr>
+                                </tr>-->
                                 </thead>
                                 <tbody id="table-downloads">
                                 <tr class="hidden-xs hidden-sm ng-scope"></tr>
@@ -139,6 +141,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Tablero de instituciones de la APF</h2>
+                        <p>En esta sección podrás dar seguimiento al cumplimiento de la Política de Datos Abiertos por parte de las instituciones del Gobierno de la República.</p>
                     </div>
                 </div>
                 <div class="row">
