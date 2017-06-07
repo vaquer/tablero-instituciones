@@ -4,7 +4,7 @@ MAINTAINER Francisco Vaquero <akura11.tt@gmail.com>
 RUN apk add git bash --update-cache && rm -rf /var/cache/apk/*
 
 RUN mkdir /project && touch /var/log/buda.log && touch /var/log/test.log && touch /var/log/budacron.log && \
-    git clone -b develop https://github.com/opintel/HWI_dgm.git /project && \
+    git clone https://github.com/opintel/HWI_dgm.git /project && \
     pip install -r /project/requirements.txt
 
 EXPOSE 8001
