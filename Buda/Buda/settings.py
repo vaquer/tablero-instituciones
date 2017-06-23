@@ -147,3 +147,4 @@ CORS_ALLOW_METHODS = (
     'GET',
     'POST',
 )
+RESET_FOOTER_URL = os.environ.get('RESET_FOOTER_URL', 'https://cdn.datos.gob.mx/qa/bower_components/dgm-style/reset-footer.css')
