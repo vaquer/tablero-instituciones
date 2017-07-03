@@ -220,7 +220,7 @@ class MatTableros(object):
                     except:
                         pass
                 else:
-                    fecha_act = datetime.datetime.strptime(recurso['date_insert'][:16], '%Y-%m-%dT%H:%M')
+                    fecha_act = datetime.datetime.strptime(recurso['date-insert'][:16], '%Y-%m-%dT%H:%M')
 
                 try:
                     descargas += recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0
@@ -231,7 +231,7 @@ class MatTableros(object):
                             'descargas': recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0,
                             'actualizacion': fecha_act.strftime("%d %b %Y") if fecha_act is not None else None
                         }
-                    except Exception, e:
+                    except Exception:
                         json_recurso = {
                             'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
                             'descargas': recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0,
