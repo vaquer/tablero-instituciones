@@ -230,13 +230,15 @@ class MatTableros(object):
                         json_recurso = {
                             'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
                             'descargas': recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0,
-                            'actualizacion': fecha_act.strftime("%d %b %Y") if fecha_act is not None else None
+                            'actualizacion': fecha_act.strftime("%d %b %Y") if fecha_act is not None else None,
+                            'organizacion': JSON_DEPENDENCIAS_INFO[dependencia].get('titulo', None) or nombre_institucion
                         }
-                    except Exception:
+                    except Exception, e:
                         json_recurso = {
                             'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
                             'descargas': recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0,
-                            'actualizacion': None
+                            'actualizacion': None,
+                            'organizacion': JSON_DEPENDENCIAS_INFO[dependencia].get('titulo', None) or nombre_institucion
                         }
 
                     json_recurso['id'] = '' if recurso['ckan']['resource'] is None or type(recurso['ckan']['resource']) == list else recurso['ckan']['resource'].get('id', None)
@@ -329,6 +331,9 @@ def scrapear_api_buda():
         print "Dependencia: {0}".format(dep)
         count_dependencias += 1
         JSON_DEPENDENCIAS[dep] = MatTableros.generar_tablero(dep)
+
+        if count_dependencias == 10:
+            break
 
     # Se crea el ranking de las dependencias
     ranking = MatTableros.calcula_ranking(JSON_DEPENDENCIAS)

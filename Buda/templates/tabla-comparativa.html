@@ -52,56 +52,129 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+        .landing-header {
+            padding-top: 30px;
+            padding-bottom: 60px;
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            position: relative;
+            margin-bottom: 0;
+        }
+
+        .landing-header img {
+            width: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            min-height: 100%;
+        }
+        .row-totales {
+            margin-top: 70px;
+        }
+        .beta {
+            color: white;
+            font-size: 14px;
+            background-color: #6b6b6b;
+            font-weight: bold;
+            padding: 5px;
+        }
+        .header-tableros {
+            margin-top: 50px;
+        }
+        .layer {
+            position: relative;
+            background-color: rgba(21, 21, 21, 0.7);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .table-header {color: #0c9;}
+        .dataTable tr th {color: #0c9; text-transform: uppercase; }
+        .datos-institucion { width: 100px; font-weight: 600; color: #6f6c6c; }
+        .datosTitle a { width: 345px; }
+        .breadcrumb-container { background-color: #fff; }
+        .span-no-bold { font-weight: 400 !important; font-size: 14px !important; }
+        #downloadsTotal, #resourcesTotal, #dependencesTotal { font-size: 36px; }
+    </style>
 </head>
 <body class="front">
-<div id="main" class="ng-scope">
+<div id="main">
     <dgm-navbar></dgm-navbar>
-    <div id="container" class="ng-scope">
-        <section id="landing-data" class="section-data ng-scope">
-            <div class="container-fluid ng-scope">
+    <div id="container" class="">
+        <section id="landing-header" class="landing-header">
+            <div class="background">            
+                <img src="{% static "img/notes-macbook-study-conference.jpg" %}">
+                <div class="layer"></div>
+            </div>
+            <div class="container-fluid header-tableros">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Tablero de seguimiento institucional | BETA</h2>
-                        <div class="content ng-scope">
+                        <span class="beta">BETA</span>
+                        <h1>Tablero de seguimiento institucional</h1>
+                        <p>Analisis condensado de publicación de datos por institución.</p>
+                    </div>
+                </div>
+                <div class="row row-totales">
+                    <div class="col-md-4 text-center">
+                        <p class="author">
+                            <span class="span-no-bold text-uppercase">DESCARGAS TOTALES</span>
+                        </p>
+                        <div class="title">
+                            <h3 id="downloadsTotal"></h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <p class="author ">
+                            <span class="span-no-bold text-uppercase">TOTAL DE DATOS ABIERTOS PUBLICADOS</span>
+                        </p>
+                        <div class="title ">
+                            <h3 id="resourcesTotal"></h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <p class="author ">
+                            <span class="span-no-bold text-uppercase">TOTAL DE INSTITUCIONES PUBLICANDO</span>
+                        </p>
+                        <div class="title ">
+                            <h3 id="dependencesTotal"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="landing-data" class="section-data">
+            <div class="breadcrumb-container ng-scope">
+               <div class="container-fluid">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <breadcrumb>
+                           <ul class="breadcrumb">
+                              <li><a ui-sref="landing" href="/"><i class="glyphicon glyphicon-home"></i></a></li>
+                              <li><a href="/tablero-instituciones/">Home</a></li>
+                           </ul>
+                        </breadcrumb>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="container-fluid ">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="content ">
                             <p>En esta sección podrás dar seguimiento al cumplimiento de la <a
                                     href="https://datos.gob.mx/guia/">Política de Datos Abiertos</a> por parte de las
                                 instituciones del Gobierno de la República.</p>
                         </div>
                     </div>
                 </div>
-                <div class="empty-space"></div>
-                <div class="row">
-                    <div class="col-md-4 text-center">
-                        <div class="title ng-binding">
-                            <h1 id="downloadsTotal" class="totals"></h1>
-                        </div>
-                        <p class="author ng-binding">
-                            <span class="ng-binding text-uppercase">Descargas totales</span>
-                        </p>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <div class="title ng-binding">
-                            <h1 id="resourcesTotal" class="totals"></h1>
-                        </div>
-                        <p class="author ng-binding">
-                            <span class="ng-binding text-uppercase">Total de Datos Abiertos Publicados</span>
-                        </p>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <div class="title ng-binding">
-                            <h1 id="dependencesTotal" class="totals"></h1>
-                        </div>
-                        <p class="author ng-binding">
-                            <span class="ng-binding text-uppercase">Total de instituciones publicados</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="empty-space"></div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="data-table">
-                            <p class="author ng-binding table-header">
-                                <span class="ng-binding">TOP 5 - Datos más descargados</span>
+                            <p class="author table-header">
+                                <span class="">TOP 5 - Datos más descargados</span>
                             </p>
                             <table class="table" id="top-5-datos">
                                 <thead class="hidden-xs hidden-sm">
@@ -111,15 +184,15 @@
                                 </tr>-->
                                 </thead>
                                 <tbody id="table-datos">
-                                <tr class="hidden-xs hidden-sm ng-scope"></tr>
+                                <tr class="hidden-xs hidden-sm "></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="data-table">
-                            <p class="author ng-binding table-header">
-                                <span class="ng-binding">TOP 5 - Instituciones con más descargas</span>
+                            <p class="author table-header">
+                                <span>TOP 5 - Instituciones con más descargas</span>
                             </p>
                             <table class="table" id="top-5-institucion">
                                 <thead class="hidden-xs hidden-sm">
@@ -129,7 +202,7 @@
                                 </tr>-->
                                 </thead>
                                 <tbody id="table-downloads">
-                                <tr class="hidden-xs hidden-sm ng-scope"></tr>
+                                <tr class="hidden-xs hidden-sm "></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -137,8 +210,8 @@
                 </div>
             </div>
         </section>
-        <section id="landing-table" class="section-data ng-scope">
-            <div class="container-fluid ng-scope">
+        <section id="landing-table" class="section-data ">
+            <div class="container-fluid ">
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Tablero de instituciones de la APF</h2>
@@ -146,7 +219,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
                         <div class="table-wrapper">
                             <div class="col-md-12">
                                 <i class="fa fa-search fa-2x"></i>
@@ -170,7 +242,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </section>
