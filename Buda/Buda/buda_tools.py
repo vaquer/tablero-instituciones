@@ -182,6 +182,7 @@ class MatTableros(object):
         publicados = 0
         publicos = 0
         privados = 0
+        ligas_no_accesibles = 0
 
         # Se obtienen las paginas a recorrer
         vecindario_de_paginas = MatTableros.generar_paginacion(dependencia)
@@ -220,7 +221,7 @@ class MatTableros(object):
                     except:
                         pass
                 else:
-                    fecha_act = datetime.datetime.strptime(recurso['date_insert'][:16], '%Y-%m-%dT%H:%M')
+                    fecha_act = datetime.datetime.strptime(recurso['date-insert'][:16], '%Y-%m-%dT%H:%M')
 
                 try:
                     descargas += recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0
@@ -254,6 +255,10 @@ class MatTableros(object):
 
                 if len(recurso['recommendations']) > 0:
                     recomendaciones = True
+                    for recomendacion in recurso['recommendations']:
+                        print recomendacion
+                        if recomendacion.get('clave') == 'd01':
+                            ligas_no_accesibles =+ 1
 
                 if recurso['ckan'].get('resource', None) is not None:
                     publicados += 1
@@ -295,6 +300,7 @@ class MatTableros(object):
             'ranking': 0,
             'publicos': publicos,
             'privados': privados,
+            'ligas_no_accesibles': ligas_no_accesibles
         } if len(json_buda.get('results', [])) > 1 else {
             'institucion': nombre_institucion or dependencia,
             'apertura': 0,
@@ -307,7 +313,8 @@ class MatTableros(object):
             'ranking': 0,
             'publicos': 0,
             'privados': 0,
-            'slug': dependencia
+            'slug': dependencia,
+            'ligas_no_accesibles': ligas_no_accesibles
         }
 
 

@@ -132,7 +132,7 @@ $(document).ready(function() {
       },
       "columns": [
           { "data": "institucion" },
-          { "data": "ranking" },
+          { "data": "ligas_no_accesibles" },
           { "data": "total", render: $.fn.dataTable.render.number( ',', '.', 0 ) },
           //{ "data": "apertura" },
           { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 )  }
