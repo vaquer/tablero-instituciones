@@ -53,17 +53,13 @@ $(document).ready(function() {
       }
     });
 
-    $.ajax({
-      url: '/tablero-instituciones/apicomparativa/total-recursos/',
-      type: 'POST',
-      success: function(data) {
-        $("#resourcesTotal").html(data.total.toLocaleString('en'));
-      },
-      error: function(){
-        alert('Sentimos los incovenientes. Estamos actualizando los datos. Intenta mas tarde.');
-        return false;
-      }
-    })
+    $.ajax("https://api.datos.gob.mx/v1/resources?pageSize=1")
+       .done(function(data){
+        $("#resourcesTotal").html(data.pagination.total.toLocaleString('en'));
+      })
+       .fail(function(err){
+         console.log(err);
+      });
     //$('[data-toggle="tooltip"]').tooltip();
 
     //var urlDataSet = 'partials/last_json.json';
