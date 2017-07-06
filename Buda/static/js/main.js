@@ -53,6 +53,17 @@ $(document).ready(function() {
       }
     });
 
+    $.ajax({
+      url: '/tablero-instituciones/apicomparativa/total-recursos/',
+      type: 'POST',
+      success: function(data) {
+        $("#resourcesTotal").html(data.total.toLocaleString('en'));
+      },
+      error: function(){
+        alert('Sentimos los incovenientes. Estamos actualizando los datos. Intenta mas tarde.');
+        return false;
+      }
+    })
     //$('[data-toggle="tooltip"]').tooltip();
 
     //var urlDataSet = 'partials/last_json.json';
@@ -121,7 +132,7 @@ $(document).ready(function() {
             downTotal = downTotal + value.descargas;
             resourTotal = resourTotal + value.total;
             $("#downloadsTotal").html(downTotal.toLocaleString('en'));
-            $("#resourcesTotal").html(resourTotal.toLocaleString('en'));
+            //$("#resourcesTotal").html(resourTotal.toLocaleString('en'));
             $("#dependencesTotal").html(json.dependencias.length);
           });
           return json.dependencias;

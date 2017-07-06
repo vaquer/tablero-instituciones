@@ -15,6 +15,7 @@ from django.conf import settings
 MEDALLAS = {'bronce': 1, 'plata': 2, 'oro': 3, 'N/A': 0}
 ARRAY_MEDALLAS = {0: 'N/A', 1: 'bronce', 2: 'plata', 3: 'oro'}
 
+#TOTAL_RECURSOS = 0
 JSON_DEPENDENCIAS = OrderedDict()
 JSON_RECURSOS = OrderedDict()
 JSON_RECURSOS_DEPENDENCIAS = OrderedDict()
@@ -24,7 +25,8 @@ URL_CKAN = 'https://datos.gob.mx/busca/api/3/action/organization_list'
 KEY_DEPEN = 'resumen-dependendencias'
 KEY_RECUR = 'descargas-recursos'
 KEY_DEPEND_RECURSOS = 'descargas-recursos-dependencias'
-CACHE_TTL = 60 * 60 * 27
+KEY_TOTAL_RECURSOS = 'total-recursos'
+CACHE_TTL = 60 * 60 * 24 * 7
 
 
 class NetWorkTablero(object):
@@ -183,6 +185,7 @@ class MatTableros(object):
         publicos = 0
         privados = 0
         ligas_no_accesibles = 0
+        liga_saludable = True
 
         # Se obtienen las paginas a recorrer
         vecindario_de_paginas = MatTableros.generar_paginacion(dependencia)
@@ -223,6 +226,14 @@ class MatTableros(object):
                 else:
                     fecha_act = datetime.datetime.strptime(recurso['date-insert'][:16], '%Y-%m-%dT%H:%M')
 
+                if len(recurso['recommendations']) > 0:
+                    recomendaciones = True
+
+                    for recomendacion in recurso['recommendations']:
+                        if recomendacion.get('clave') == 'd01':
+                            ligas_no_accesibles =+ 1
+                            liga_saludable = False
+
                 try:
                     descargas += recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0
 
@@ -231,14 +242,18 @@ class MatTableros(object):
                             'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
                             'descargas': recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0,
                             'actualizacion': fecha_act.strftime("%d %b %Y") if fecha_act is not None else None,
-                            'organizacion': JSON_DEPENDENCIAS_INFO[dependencia].get('titulo', None) or nombre_institucion
+                            'organizacion': JSON_DEPENDENCIAS_INFO[dependencia].get('titulo', None) or nombre_institucion,
+                            'organizacion_slug': dependencia,
+                            'liga_saludable': liga_saludable
                         }
                     except Exception, e:
                         json_recurso = {
                             'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
                             'descargas': recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0,
                             'actualizacion': None,
-                            'organizacion': JSON_DEPENDENCIAS_INFO[dependencia].get('titulo', None) or nombre_institucion
+                            'organizacion': JSON_DEPENDENCIAS_INFO[dependencia].get('titulo', None) or nombre_institucion,
+                            'organizacion_slug': dependencia,
+                            'liga_saludable': liga_saludable
                         }
 
                     json_recurso['id'] = '' if recurso['ckan']['resource'] is None or type(recurso['ckan']['resource']) == list else recurso['ckan']['resource'].get('id', None)
@@ -255,12 +270,6 @@ class MatTableros(object):
                     })
                     JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = 0
 
-                if len(recurso['recommendations']) > 0:
-                    recomendaciones = True
-                    for recomendacion in recurso['recommendations']:
-                        print recomendacion
-                        if recomendacion.get('clave') == 'd01':
-                            ligas_no_accesibles =+ 1
 
                 if recurso['ckan'].get('resource', None) is not None:
                     publicados += 1
@@ -276,6 +285,8 @@ class MatTableros(object):
 
                 apertura_array.append(recurso['adela']['dataset']['openessRating'])
                 contador += 1
+                #TOTAL_RECURSOS = TOTAL_RECURSOS + 1
+                #print TOTAL_RECURSOS
 
         # Resultados finales
         if len(apertura_array) > 0:
@@ -332,8 +343,8 @@ def scrapear_api_buda():
         count_dependencias += 1
         JSON_DEPENDENCIAS[dep] = MatTableros.generar_tablero(dep)
 
-        if count_dependencias == 10:
-            break
+        # if count_dependencias == 10:
+        #    break
 
     # Se crea el ranking de las dependencias
     ranking = MatTableros.calcula_ranking(JSON_DEPENDENCIAS)
@@ -341,7 +352,9 @@ def scrapear_api_buda():
     cache.set(KEY_DEPEN, ranking, CACHE_TTL)
     cache.set(KEY_RECUR, JSON_RECURSOS, CACHE_TTL)
     cache.set(KEY_DEPEND_RECURSOS, JSON_RECURSOS_DEPENDENCIAS, CACHE_TTL)
+    cache.set(KEY_TOTAL_RECURSOS, len(JSON_RECURSOS), CACHE_TTL)
     #cache.set(KEY_DEPENDENCIA_INFO, JSON_DEPENDENCIAS_INFO, CACHE_TTL)
 
     print "************************Terminan calculos*************************************"
     print "DEPENDENCIAS PROCESADAS: {0}".format(str(count_dependencias))
+    print "RECURSOS PROCESADOS: {0}".format(len(JSON_RECURSOS))
