@@ -92,12 +92,14 @@
             height: 100%;
         }
         .table-header {color: #0c9;}
+        .text-center { text-align: center !important; }
         .dataTable tr th { color: #0c9; text-transform: uppercase; }
         .datos-institucion { width: 100px; font-weight: 600; color: #6f6c6c; }
         .datosTitle a { width: 345px; }
         .breadcrumb-container { background-color: #fff; }
         .span-no-bold { font-weight: 400 !important; font-size: 14px !important; }
         #downloadsTotal, #resourcesTotal, #dependencesTotal { font-size: 36px; }
+        .data-table tr th { text-align: right; }
     </style>
 </head>
 <body class="front">
@@ -220,13 +222,13 @@
                                     <table class="table" id="apf_table">
                                         <thead class="hidden-xs hidden-sm">
                                         <tr>
-                                            <th>INSTITUCIÓN</th>
+                                            <th style="text-align: left;">INSTITUCIÓN</th>
                                             {% comment %}
                                             <th>Ranking <i class="fa fa-question-circle" data-toggle="tooltip" title="El ranking contempla: la clasificación de la calidad en los datos, puntualidad en el cumplimiento, descargas realizadas y las recomendaciones por atender"></i></th>
                                             {% endcomment %}
-                                            <th>LINKS ROTOS <i class="fa fa-question-circle" data-toggle="tooltip" title="El ranking contempla: la clasificación de la calidad en los datos, puntualidad en el cumplimiento, descargas realizadas y las recomendaciones por atender"></i></th>
-                                            <th>DATOS</th>
-                                            <th>DESCARGAS</th>
+                                            <th style="text-align: center; width: 85px;">LINKS ROTOS <i class="fa fa-question-circle" data-toggle="tooltip" title="El ranking contempla: la clasificación de la calidad en los datos, puntualidad en el cumplimiento, descargas realizadas y las recomendaciones por atender"></i></th>
+                                            <th style="text-align: center; width: 75px;">DATOS</th>
+                                            <th style="text-align: center; width: 110px !important;">DESCARGAS</th>
                                         </tr>
                                         </thead>
                                     </table>

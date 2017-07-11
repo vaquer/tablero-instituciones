@@ -27,7 +27,6 @@ $(document).ready(function() {
             }
         }
     });
-    //var urlDescargasDatos = 'partials/example.json';
     var urlDescargasDatos = '/tablero-instituciones/apicomparativa/recursos-mas-descargados/';
     var newDataSet, descargasDatos;
     //Datos mas descargados
@@ -62,7 +61,6 @@ $(document).ready(function() {
       });
     //$('[data-toggle="tooltip"]').tooltip();
 
-    //var urlDataSet = 'partials/last_json.json';
     var urlDataSet = '/tablero-instituciones/apicomparativa/';
     var downTotal = 0;
     var resourTotal = 0;
@@ -78,11 +76,10 @@ $(document).ready(function() {
       "bLengthChange": false,
       "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
         $('td:eq(0)', nRow).addClass("depenTitle").attr("title",aData.institucion).attr("tag", aData.slug);
-        //$('td:eq(3)', nRow).attr( "data-score",aData.apertura ).addClass("rating text-center").html("");
-        $('td:eq(1), td:eq(2), td:eq(4)', nRow).addClass("text-right");
-        $('td:eq(3), td:eq(2), td:eq(4)', nRow).addClass("text-right");
-        //$('td:eq(5)', nRow).addClass("starsTd text-center");
+        $('td:eq(1), td:eq(2), td:eq(4)', nRow).addClass("text-center");
+        $('td:eq(3), td:eq(2), td:eq(4)', nRow).addClass("text-center");
       },
+      "order": [[ 3, "desc" ]],
       drawCallback: function(settings){
             var api = this.api();
             // Initialize custom control
@@ -131,6 +128,7 @@ $(document).ready(function() {
             //$("#resourcesTotal").html(resourTotal.toLocaleString('en'));
             $("#dependencesTotal").html(json.dependencias.length);
           });
+
           return json.dependencias;
         }
       },"error": function(){
@@ -138,13 +136,18 @@ $(document).ready(function() {
         return false;
       },
       "columns": [
-          { "data": "institucion" },
-          { "data": "ligas_no_accesibles" },
-          { "data": "total", render: $.fn.dataTable.render.number( ',', '.', 0 ) },
-          //{ "data": "apertura" },
-          { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 )  }
-          //{ "data": "calidad" }
-      ]
+          { "data": "institucion", width: 400 },
+          { "data": "ligas_no_accesibles", width: 200 },
+          { "data": "total", render: $.fn.dataTable.render.number( ',', '.', 0 ), width: 200 },
+          { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 ), width: 200 }
+      ],
+       columnDefs: [
+            { width: 200, targets: 0 },
+            { width: 200, targets: 0 },
+            { width: 200, targets: 0 },
+            { width: 200, targets: 0 }
+        ],
+        fixedColumns: true
     });
 
     $("#searchbox").keyup(function() {

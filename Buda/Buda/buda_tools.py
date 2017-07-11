@@ -343,12 +343,12 @@ def scrapear_api_buda():
         count_dependencias += 1
         JSON_DEPENDENCIAS[dep] = MatTableros.generar_tablero(dep)
 
-        # if count_dependencias == 10:
-        #    break
+        if count_dependencias == 30:
+            break
 
     # Se crea el ranking de las dependencias
     ranking = MatTableros.calcula_ranking(JSON_DEPENDENCIAS)
-    # Se guarda en cache por 27 horas
+    # Se guarda en cache por una semana
     cache.set(KEY_DEPEN, ranking, CACHE_TTL)
     cache.set(KEY_RECUR, JSON_RECURSOS, CACHE_TTL)
     cache.set(KEY_DEPEND_RECURSOS, JSON_RECURSOS_DEPENDENCIAS, CACHE_TTL)

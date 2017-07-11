@@ -55,6 +55,7 @@ def api_comparativa(request):
     RESPUESTA: Json
     """
     dependencias_cache = cache.get('resumen-dependendencias', None)
+    dependencias_cache.sort(key=lambda x: x['descargas'], reverse=True)
     return JsonResponse({'dependencias': dependencias_cache})
 
 
