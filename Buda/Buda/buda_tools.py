@@ -259,8 +259,10 @@ class MatTableros(object):
                     json_recurso['id'] = '' if recurso['ckan']['resource'] is None or type(recurso['ckan']['resource']) == list else recurso['ckan']['resource'].get('id', None)
                     json_recurso['dataset'] = '' if recurso['ckan']['dataset'] is None else recurso['ckan']['dataset'].get('name', None)
 
-                    JSON_RECURSOS_DEPENDENCIAS[dependencia].append(json_recurso)
-                    JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = json_recurso
+                    if json_recurso['id'] != '' and json_recurso['id'] is not None:
+                        JSON_RECURSOS_DEPENDENCIAS[dependencia].append(json_recurso)
+                        JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = json_recurso
+
                 except TypeError:
                     descargas += 0
                     JSON_RECURSOS_DEPENDENCIAS[dependencia].append({
@@ -343,8 +345,8 @@ def scrapear_api_buda():
         count_dependencias += 1
         JSON_DEPENDENCIAS[dep] = MatTableros.generar_tablero(dep)
 
-        if count_dependencias == 30:
-            break
+        #if count_dependencias == 30:
+        #    break
 
     # Se crea el ranking de las dependencias
     ranking = MatTableros.calcula_ranking(JSON_DEPENDENCIAS)

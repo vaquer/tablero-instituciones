@@ -69,8 +69,12 @@ $(document).ready(function() {
       "language": {
           "paginate": {
             "previous": "Anterior",
-            "next": "Siguiente"
-          }
+            "next": "Siguiente",
+          },
+          "emptyTable": "No se encontraron resultados",
+          "zeroRecords": "No se encontraron resultados",
+          "sZeroRecords": "No se encontraron resultados",
+          "infoEmpty": "No se encontraron resultados"
         },
       "info": false,
       "bLengthChange": false,

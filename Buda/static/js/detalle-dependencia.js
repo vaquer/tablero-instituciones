@@ -66,7 +66,8 @@ function getapiOrg(orgName) {
       "language": {
           "paginate": {
             "previous": "Anterior",
-            "next": "Siguiente"
+            "next": "Siguiente",
+            "emptyTable": "No se encontraron resultados"
           }
         },
       "info": false,

@@ -135,7 +135,7 @@ def recursos_mas_descargados_dep(request, slug):
 
         recursos_ordenados = rec_dep
 
-    return JsonResponse({'recursos': recursos_ordenados[:20]}, safe=False)
+    return JsonResponse({'recursos': recursos_ordenados}, safe=False)
 
 @csrf_exempt
 def total_de_recursos(request):
