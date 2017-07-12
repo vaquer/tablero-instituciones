@@ -196,6 +196,8 @@ class MatTableros(object):
 
             for recurso in json_buda.get('results', []):
                 fecha_act = None
+                liga_saludable = True
+
                 # Datos de la dependencia
                 if JSON_DEPENDENCIAS_INFO[dependencia].get('slug', None) is None or JSON_DEPENDENCIAS_INFO[dependencia].get('slug', None) == '':
                     if recurso['ckan'].get('dataset', None) and recurso['ckan'].get('dataset', {}).get('organization', None):
