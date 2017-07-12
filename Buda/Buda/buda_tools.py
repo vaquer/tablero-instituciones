@@ -233,7 +233,7 @@ class MatTableros(object):
 
                     for recomendacion in recurso['recommendations']:
                         if recomendacion.get('clave') == 'd01':
-                            ligas_no_accesibles =+ 1
+                            ligas_no_accesibles += 1
                             liga_saludable = False
 
                 try:
