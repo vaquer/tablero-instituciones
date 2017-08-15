@@ -83,7 +83,8 @@ $(document).ready(function() {
         $('td:eq(1), td:eq(2), td:eq(4)', nRow).addClass("text-center");
         $('td:eq(3), td:eq(2), td:eq(4)', nRow).addClass("text-center");
       },
-      "order": [[ 3, "desc" ]],
+      "pagingType": "simple_numbers",
+      "order": [[ 0, "asc" ]],
       drawCallback: function(settings){
             var api = this.api();
             // Initialize custom control
@@ -140,10 +141,10 @@ $(document).ready(function() {
         return false;
       },
       "columns": [
-          { "data": "institucion", width: 400 },
-          { "data": "ligas_no_accesibles", width: 200 },
-          { "data": "total", render: $.fn.dataTable.render.number( ',', '.', 0 ), width: 200 },
-          { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 ), width: 200 }
+          { "data": "institucion", "width": 400 },
+          { "data": "total", render: $.fn.dataTable.render.number( ',', '.', 0 ), "width": 200 },
+          { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 ), "width": 200 },
+          { "data": "ligas_no_accesibles", "width": 200 }
       ],
        columnDefs: [
             { width: 200, targets: 0 },
@@ -163,7 +164,7 @@ $(document).ready(function() {
     function initRating(container){
       $('.rating', container).raty({
         starType: 'i',
-        hints       : ['1', '2', '3', '4', '5'],
+        hints: ['1', '2', '3', '4', '5'],
         half: true,
         starHalf: 'glyphicon glyphicon-star gly-2x',
         starOff: 'glyphicon glyphicon-star-empty gly-2x',

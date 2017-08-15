@@ -216,10 +216,27 @@ section#landing-table .data-table {
     margin-bottom: 40px;
 }
 
-#apf_table_previous, #apf_table_next {
-    display: none;
+/* #apf_table_previous, #apf_table_next {
+    display: block;
+} */
+ #apf_table_previous {
+    border: 1px solid #d8d8d8;
+    margin-right: 5px;
+    border-radius: 4px;
 }
 
+#apf_table_previous:hover {
+    margin-right: 6px;
+}
+
+#apf_table_next {
+    border: 1px solid #d8d8d8;
+    margin-left: 5px;
+    border-radius: 4px;
+}
+#apf_table_next:hover {
+    margin-left: 6px;
+}
 
 #apf_table_paginate {
     background-color: white;

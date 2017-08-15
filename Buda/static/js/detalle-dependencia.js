@@ -76,8 +76,8 @@ $('#top-5-datos').dataTable({
     "info": false,
     "bLengthChange": false,
     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-    $('td:eq(0)', nRow).attr("tag", aData.slug).addClass("recurso-col");
-    $('td:eq(1)', nRow).addClass("text-center");
+        $('td:eq(0)', nRow).attr("tag", aData.slug).addClass("recurso-col");
+        $('td:eq(1)', nRow).addClass("text-center");
     },
     "ajax": {
     "url": '/tablero-instituciones/apicomparativa/recursos-mas-descargados/' + orgName + '/',
