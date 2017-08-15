@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """
 Django settings for Buda project.
 
@@ -149,4 +150,3 @@ CORS_ALLOW_METHODS = (
 )
 RESET_FOOTER_URL = os.environ.get('RESET_FOOTER_URL', 'https://cdn.datos.gob.mx/qa/bower_components/dgm-style/reset-footer.css')
 CDN_GOB_ROOT_URL = os.environ.get('CDN_GOB_ROOT_URL', '//cdn.datos.gob.mx/')
-

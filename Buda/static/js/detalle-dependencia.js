@@ -61,47 +61,57 @@ function getapiOrg(orgName) {
         }
     });
 
-    $('#top-5-datos').dataTable({
-        searching: false,
-      "language": {
+$('#top-5-datos').dataTable({
+    searching: false,
+    "language": {
           "paginate": {
             "previous": "Anterior",
             "next": "Siguiente",
-            "emptyTable": "No se encontraron resultados"
-          }
+          },
+          "emptyTable": "No se encontraron resultados",
+          "zeroRecords": "No se encontraron resultados",
+          "sZeroRecords": "No se encontraron resultados",
+          "infoEmpty": "No se encontraron resultados"
         },
-      "info": false,
-      "bLengthChange": false,
-      "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-        $('td:eq(0)', nRow).attr("tag", aData.slug);
-      },
-      "ajax": {
-        "url": '/tablero-instituciones/apicomparativa/recursos-mas-descargados/' + orgName + '/',
-        "type": 'POST',
-        "dataSrc": function (json) {
-          if(json.recursos === undefined || json.recursos === null){
-            alert('Sentimos los incovenientes. Estamos actualizando los datos. Intenta mas tarde.');
-            return false;
-          }
-
-          return json.recursos;
-        }
-      },"error": function(){
+    "info": false,
+    "bLengthChange": false,
+    "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+    $('td:eq(0)', nRow).attr("tag", aData.slug).addClass("recurso-col");
+    $('td:eq(1)', nRow).addClass("text-center");
+    },
+    "ajax": {
+    "url": '/tablero-instituciones/apicomparativa/recursos-mas-descargados/' + orgName + '/',
+    "type": 'POST',
+    "dataSrc": function (json) {
+        if(json.recursos === undefined || json.recursos === null){
         alert('Sentimos los incovenientes. Estamos actualizando los datos. Intenta mas tarde.');
         return false;
-      },
-      "columns": [
-          { "data": "recurso" },
-          { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 ), class: 'descargas-tabla' },
-          { "data": "liga_saludable", render: function ( data, type, row ) {
-                var class_txt = 'ok';
-                if(data !== true){
-                    class_txt = 'remove';
-                }
-                return '<span class="glyphicon glyphicon-' + class_txt + '"></>';
-            }, class: 'status_link'
-          }
-      ]
+        }
+
+        return json.recursos;
+    }
+    },"error": function(){
+    alert('Sentimos los incovenientes. Estamos actualizando los datos. Intenta mas tarde.');
+    return false;
+    },
+    "columns": [
+        { "data": "recurso", width: 400, class: "recurso-col" },
+        { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 ), class: 'descargas-tabla', width: 200 },
+        { "data": "liga_saludable", render: function ( data, type, row ) {
+            var class_txt = 'ok';
+            if(data !== true){
+                class_txt = 'remove';
+            }
+            return '<span class="glyphicon glyphicon-' + class_txt + '"></>';
+        }, class: 'status_link text-center', width: 200
+        }
+    ],
+    columnDefs: [
+        { width: 200, targets: 0 },
+        { width: 200, targets: 0 },
+        { width: 200, targets: 0 },
+    ],
+    fixedColumns: true
     });
 
     orgLogoUrl = 'https://raw.githubusercontent.com/mxabierto/assets/master/img/logos/' + orgName + '.png';
