@@ -21,7 +21,10 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="//datos.gob.mx/css/style.css">
-    <link rel="stylesheet" href="/static/buda/css/datosgobmx-detalle-dependencia.css?18190459">
+    {% comment %}
+     <link rel="stylesheet" href="/static/buda/css/datosgobmx-detalle-dependencia.css?18190459">
+    {% endcomment %}
+    <link rel="stylesheet" href="{% static "css/datosgobmx-detalle-dependencia.css" %}">
     <link rel="stylesheet" type="text/css" href="{{settings.RESET_FOOTER_URL}}">
     <style type="text/css">
         .header_table { color: #0c9; text-transform: uppercase; }
