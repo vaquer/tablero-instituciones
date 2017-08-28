@@ -142,7 +142,7 @@ $(document).ready(function() {
       },
       "columns": [
           { "data": "institucion", "width": 400 },
-          { "data": "total", render: $.fn.dataTable.render.number( ',', '.', 0 ), "width": 200 },
+          { "data": "publicados", render: $.fn.dataTable.render.number( ',', '.', 0 ), "width": 200 },
           { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 ), "width": 200 },
           { "data": "ligas_no_accesibles", "width": 200 }
       ],
