@@ -261,6 +261,9 @@ class MatTableros(object):
                     json_recurso['id'] = '' if recurso['ckan']['resource'] is None or type(recurso['ckan']['resource']) == list else recurso['ckan']['resource'].get('id', None)
                     json_recurso['dataset'] = '' if recurso['ckan']['dataset'] is None else recurso['ckan']['dataset'].get('name', None)
 
+                    if json_recurso['id'] is None or json_recurso['id'] == '':
+                        print recurso
+
                     if json_recurso['id'] != '' and json_recurso['id'] is not None:
                         JSON_RECURSOS_DEPENDENCIAS[dependencia].append(json_recurso)
                         JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = json_recurso
@@ -300,6 +303,14 @@ class MatTableros(object):
 
         if contador == 0:
             contador = 1
+
+        if len(JSON_RECURSOS_DEPENDENCIAS[dependencia]) != contador:
+            print "Error en los calculos con JSON_RECURSOS_DEPENDENCIAS"
+            print "{} vs {}".format(len(JSON_RECURSOS_DEPENDENCIAS[dependencia]), contador)
+
+        if len(apertura_array) != contador:
+            print "Error en los calculos con apertura_array"
+            print "{} vs {}".format(len(apertura_array), contador)
             
         calidad = ARRAY_MEDALLAS[(calidad/contador)]
         calificacion = MatTableros.genera_calificacion(calidad, pendientes, descargas > 0, recomendaciones)
@@ -347,8 +358,8 @@ def scrapear_api_buda():
         count_dependencias += 1
         JSON_DEPENDENCIAS[dep] = MatTableros.generar_tablero(dep)
 
-        #if count_dependencias == 30:
-        #    break
+        if count_dependencias == 10:
+            break
 
     # Se crea el ranking de las dependencias
     ranking = MatTableros.calcula_ranking(JSON_DEPENDENCIAS)
