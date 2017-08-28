@@ -311,7 +311,7 @@ class MatTableros(object):
         #if len(apertura_array) != contador:
         #    print "Error en los calculos con apertura_array"
         #    print "{} vs {}".format(len(apertura_array), contador)
-            
+
         calidad = ARRAY_MEDALLAS[(calidad/contador)]
         calificacion = MatTableros.genera_calificacion(calidad, pendientes, descargas > 0, recomendaciones)
 
