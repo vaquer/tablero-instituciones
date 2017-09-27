@@ -24,7 +24,7 @@ function getapiOrg(orgName) {
     var totalRecommendations = 0;
 
     $(".org-breadcrumb").text(orgName.toUpperCase());
- 
+
     //Ajax Get
     $.ajax({
         //url: 'http://api.datos.gob.mx/v1/data-fusion?catalog-dataset.publisher.name=SHCP&pageSize=1000',
@@ -80,24 +80,28 @@ $('#top-5-datos').dataTable({
         $('td:eq(1)', nRow).addClass("text-center");
     },
     "ajax": {
-    "url": '/tablero-instituciones/apicomparativa/recursos-mas-descargados/' + orgName + '/',
-    "type": 'POST',
-    "dataSrc": function (json) {
-        if(json.recursos === undefined || json.recursos === null){
+        "url": '/tablero-instituciones/apicomparativa/recursos-mas-descargados/' + orgName + '/',
+        "type": 'POST',
+        "dataSrc": function (json) {
+            if(json.recursos === undefined || json.recursos === null){
+                alert('Sentimos los incovenientes. Estamos actualizando los datos. Intenta mas tarde.');
+                return false;
+            }
+
+            return json.recursos;
+        }
+    },
+    "error": function(){
         alert('Sentimos los incovenientes. Estamos actualizando los datos. Intenta mas tarde.');
         return false;
-        }
-
-        return json.recursos;
-    }
-    },"error": function(){
-    alert('Sentimos los incovenientes. Estamos actualizando los datos. Intenta mas tarde.');
-    return false;
     },
     "columns": [
-        { "data": "recurso", width: 400, class: "recurso-col" },
+        { "data": "recurso", width: 400, class: "recurso-col", render: function(data, type, row){
+            console.warn(row);
+            return '<a href="https://datos.gob.mx/busca/dataset/' + row['dataset'] + '/resource/'+ row['id'] + '">'+ data +'</a>';
+        }, class: "recurso-col"},
         { "data": "descargas", render: $.fn.dataTable.render.number( ',', '.', 0 ), class: 'descargas-tabla', width: 200 },
-        { "data": "liga_saludable", render: function ( data, type, row ) {
+        { "data": "liga_saludable", render: function (data, type, row){
             var class_txt = 'ok';
             if(data !== true){
                 class_txt = 'remove';

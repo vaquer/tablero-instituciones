@@ -54,7 +54,7 @@ def api_comparativa(request):
     URL: /tablero-instituciones/apicomparativa/
     RESPUESTA: Json
     """
-    dependencias_cache = cache.get('resumen-dependendencias', None)
+    dependencias_cache = cache.get('resumen-dependendencias', {'descargas': []})
     dependencias_cache.sort(key=lambda x: x['descargas'], reverse=True)
     return JsonResponse({'dependencias': dependencias_cache})
 
@@ -68,7 +68,7 @@ def api_comparativa_dependencia(request, slug):
     URL: /tablero-instituciones/apicomparativa/{slug}/
     RESPUESTA: Json
     """
-    dependencias_cache = cache.get('resumen-dependendencias', None)
+    dependencias_cache = cache.get('resumen-dependendencias', [])
 
     try:
         for elemento in dependencias_cache:
@@ -117,26 +117,22 @@ def recursos_mas_descargados_dep(request, slug):
     recursos_ordenados = []
 
     if recursos is not None:
-        ky = operator.itemgetter(1)
         try:
-         rec_dep = recursos[slug]
+            rec_dep = recursos[slug]
         except Exception:
             raise Http404
 
-        aux_recurso = None
-
-        for elemento_a in range(0, len(rec_dep)):
-            for index in range(0, len(rec_dep)):
-                if index > 0:
-                    if rec_dep[index]['descargas'] > rec_dep[index - 1]['descargas']:
-                        aux_recurso = rec_dep[index - 1]
-                        rec_dep[index - 1] = rec_dep[index]
-                        rec_dep[index] = aux_recurso
-
-        recursos_ordenados = rec_dep
+        recursos_ordenados = sorted(rec_dep, key=lambda x: x['descargas'], reverse=True)
 
     return JsonResponse({'recursos': recursos_ordenados}, safe=False)
 
+
 @csrf_exempt
 def total_de_recursos(request):
+    """
+    Vista que el total de recursos
+    contabilizados
+    URL: tablero-instituciones/apicomparativa/total-recursos/
+    RESPUESTA: Json
+    """
     return JsonResponse({'total': cache.get('total-recursos', 0)})
