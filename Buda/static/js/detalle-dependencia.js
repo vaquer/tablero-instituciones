@@ -106,7 +106,7 @@ $('#top-5-datos').dataTable({
             if(data !== true){
                 class_txt = 'remove';
             }
-            return '<span class="glyphicon glyphicon-' + class_txt + '"></>';
+            return '<span class="glyphicon glyphicon-' + class_txt + '" attr-data="' + data + '"><p class="hidden">'+ data + '</p></>';
         }, class: 'status_link text-center', width: 200
         }
     ],

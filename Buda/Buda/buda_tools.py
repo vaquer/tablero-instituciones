@@ -56,6 +56,7 @@ class NetWorkTablero(object):
         Retorno: Json Dict
         """
 
+        # print(URL_ADELA.format(depen, str(pagina)))
         respuesta_buda = requests.get(URL_ADELA.format(depen, str(pagina)))
         return respuesta_buda.json()
 
@@ -154,8 +155,8 @@ class MatTableros(object):
         """
         json_buda = NetWorkTablero.llamar_a_buda(dependencia)
 
-        datos_totales = json_buda['pagination']['total']
-        tamano_pagina = json_buda['pagination']['pageSize']
+        datos_totales = int(json_buda['pagination']['total'])
+        tamano_pagina = int(json_buda['pagination']['pageSize'])
 
         paginas_totales = (datos_totales / tamano_pagina)
         paginas_totales += 0 if datos_totales % tamano_pagina == 0 else 1
@@ -191,6 +192,8 @@ class MatTableros(object):
         vecindario_de_paginas = MatTableros.generar_paginacion(dependencia)
         JSON_RECURSOS_DEPENDENCIAS[dependencia] = []
         JSON_DEPENDENCIAS_INFO[dependencia] = {}
+        print "Vecindario"
+        print vecindario_de_paginas
         for pagina in vecindario_de_paginas:
             json_buda = NetWorkTablero.llamar_a_buda(dependencia, pagina)
 
@@ -210,7 +213,7 @@ class MatTableros(object):
                     if JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] == None or JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] == '':
                         JSON_DEPENDENCIAS_INFO[dependencia]['titulo'] = dependencia.replace('-', ' ').upper()
 
-                if recurso['calificacion'] != u'none':
+                if recurso.get('calificacion', u'none') != u'none':
                     calidad += MEDALLAS[recurso['calificacion']]
                 else:
                     calidad += 1
