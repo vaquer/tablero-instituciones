@@ -22,9 +22,9 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="//cdn.datos.gob.mx/assets/css/main.css">
     {% comment %}
-    <link rel="stylesheet" href="{% static "css/datosgobmx-detalle-dependencia.css" %}">
-    {% endcomment %}
     <link rel="stylesheet" href="/static/buda/css/datosgobmx-detalle-dependencia.css?18190459">
+    {% endcomment %}
+    <link rel="stylesheet" href="{% static "css/datosgobmx-detalle-dependencia.css" %}">
     <link rel="stylesheet" type="text/css" href="{{settings.RESET_FOOTER_URL}}">
     <style type="text/css">
         .header_table { color: #0c9; text-transform: uppercase; }
@@ -193,9 +193,9 @@
 
 <!-- Custom JS -->
 {% comment %}
-<script src="{% static "js/detalle-dependencia.js" %}" type="text/javascript"></script>
-{% endcomment %}
 <script src="/static/buda/js/detalle-dependencia.js?12323423" type="text/javascript"></script>
+{% endcomment %}
+<script src="{% static "js/detalle-dependencia.js" %}" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
         omitirAcentos("{{slug}}");
