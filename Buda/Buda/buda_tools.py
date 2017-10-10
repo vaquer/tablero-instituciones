@@ -58,7 +58,13 @@ class NetWorkTablero(object):
 
         # print(URL_ADELA.format(depen, str(pagina)))
         respuesta_buda = requests.get(URL_ADELA.format(depen, str(pagina)))
-        return respuesta_buda.json()
+
+        try:
+            return respuesta_buda.json()
+        except Exception:
+            print respuesta_buda.url
+            print respuesta_buda
+            return None
 
 
 class MatTableros(object):
@@ -201,6 +207,12 @@ class MatTableros(object):
                 fecha_act = None
                 liga_saludable = True
 
+                if len(recurso['ckan']['resource'].keys()) == 0 and not recurso.get('adela'):
+                    continue
+            
+                if 'name' not in recurso['ckan']['resource'].keys() and not recurso.get('adela'):
+                    continue
+
                 # Datos de la dependencia
                 if JSON_DEPENDENCIAS_INFO[dependencia].get('slug', None) is None or JSON_DEPENDENCIAS_INFO[dependencia].get('slug', None) == '':
                     if recurso['ckan'].get('dataset', None) and recurso['ckan'].get('dataset', {}).get('organization', None):
@@ -218,17 +230,21 @@ class MatTableros(object):
                 else:
                     calidad += 1
 
-                if recurso['adela']['dataset']['public'] is True:
-                    publicos += 1
-                else:
-                    privados += 1
+                if recurso.get('adela'):
+                    if recurso['adela']['dataset']['public'] is True:
+                        publicos += 1
+                    else:
+                        privados += 1
 
-                if recurso['adela']['resource']['modified'] is not None:
-                    try:
-                        fecha_act = datetime.datetime.strptime(recurso['adela']['resource']['modified'][:16], '%Y-%m-%dT%H:%M')
-                    except:
-                        pass
+                    if recurso['adela']['resource']['modified'] is not None:
+                        try:
+                            fecha_act = datetime.datetime.strptime(recurso['adela']['resource']['modified'][:16], '%Y-%m-%dT%H:%M')
+                        except:
+                            pass
+                    else:
+                        fecha_act = datetime.datetime.strptime(recurso['date-insert'][:16], '%Y-%m-%dT%H:%M')
                 else:
+                    publicos += 1
                     fecha_act = datetime.datetime.strptime(recurso['date-insert'][:16], '%Y-%m-%dT%H:%M')
 
                 if len(recurso['recommendations']) > 0:
@@ -244,7 +260,7 @@ class MatTableros(object):
 
                     try:
                         json_recurso = {
-                            'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
+                            'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8')),
                             'descargas': recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0,
                             'actualizacion': fecha_act.strftime("%d %b %Y") if fecha_act is not None else None,
                             'organizacion': JSON_DEPENDENCIAS_INFO[dependencia].get('titulo', None) or nombre_institucion,
@@ -252,8 +268,9 @@ class MatTableros(object):
                             'liga_saludable': liga_saludable
                         }
                     except Exception, e:
+
                         json_recurso = {
-                            'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
+                            'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8')),
                             'descargas': recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0,
                             'actualizacion': None,
                             'organizacion': JSON_DEPENDENCIAS_INFO[dependencia].get('titulo', None) or nombre_institucion,
@@ -269,16 +286,16 @@ class MatTableros(object):
 
                     if json_recurso['id'] != '' and json_recurso['id'] is not None:
                         JSON_RECURSOS_DEPENDENCIAS[dependencia].append(json_recurso)
-                        JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = json_recurso
+                        JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8'))] = json_recurso
 
                 except TypeError:
                     descargas += 0
                     JSON_RECURSOS_DEPENDENCIAS[dependencia].append({
-                        'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8')),
+                        'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8')),
                         'descargas': 0,
                         'actualizacion': None
                     })
-                    JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8'))] = 0
+                    JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8'))] = 0
 
 
                 if recurso['ckan'].get('resource', None) is not None:
@@ -293,7 +310,7 @@ class MatTableros(object):
                     nombre_institucion = dependencia
                     pass
 
-                apertura_array.append(recurso['adela']['dataset']['openessRating'])
+                apertura_array.append(recurso['adela']['dataset']['openessRating'] if recurso.get('adela') else 0)
                 contador += 1
                 #TOTAL_RECURSOS = TOTAL_RECURSOS + 1
                 #print TOTAL_RECURSOS
