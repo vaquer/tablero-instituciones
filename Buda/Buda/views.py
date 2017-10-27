@@ -114,16 +114,20 @@ def recursos_mas_descargados_dep(request, slug):
     URL: tablero-instituciones/apicomparativa/recursos-mas-descargados/{slug}/
     RESPUESTA: Json
     """
-    recursos = cache.get('descargas-recursos-dependencias', None)
-    recursos_ordenados = []
+    recursos_ordenados = cache.get('descargas-recursos-dependencias-{0}'.format(slug))
 
-    if recursos is not None:
-        try:
-            rec_dep = recursos[slug]
-        except Exception:
-            raise Http404
+    if not recursos_ordenados:
+        recursos = cache.get('descargas-recursos-dependencias', None)
+        recursos_ordenados = []
 
-        recursos_ordenados = sorted(rec_dep, key=lambda x: x['descargas'], reverse=True)
+        if recursos is not None:
+            try:
+                rec_dep = recursos[slug]
+            except Exception:
+                raise Http404
+
+            recursos_ordenados = sorted(rec_dep, key=lambda x: x['descargas'], reverse=True)
+            cache.set('descargas-recursos-dependencias-{0}'.format(slug), recursos_ordenados, 60 * 5)
 
     return JsonResponse({'recursos': recursos_ordenados}, safe=False)
 
