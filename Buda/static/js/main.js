@@ -129,7 +129,7 @@ $(document).ready(function() {
           $.each(json.dependencias,function(key, value){
             downTotal = downTotal + value.descargas;
             resourTotal = resourTotal + value.total;
-            $("#downloadsTotal").html(downTotal.toLocaleString('en'));
+            // $("#downloadsTotal").html(downTotal.toLocaleString('en'));
             //$("#resourcesTotal").html(resourTotal.toLocaleString('en'));
             $("#dependencesTotal").html(json.dependencias.length);
           });

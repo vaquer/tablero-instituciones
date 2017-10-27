@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'corsheaders',
     'redis_cache',
 ]
@@ -82,7 +83,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Buda.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
@@ -112,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -126,7 +125,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
@@ -138,7 +136,6 @@ STATICFILES_FINDERS = [
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/'),
 ]
-
 
 STATIC_URL = os.environ.get('CDN_STATIC_FILES_URL', '/static/buda/')
 

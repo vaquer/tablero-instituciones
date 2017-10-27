@@ -1,4 +1,6 @@
 {% load static from staticfiles %}
+{% load humanize %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -121,7 +123,7 @@
     <dgm-navbar></dgm-navbar>
     <div id="container" class="">
         <section id="landing-header" class="landing-header">
-            <div class="background">            
+            <div class="background">
                 <img src="{% static "img/notes-macbook-study-conference.jpg" %}">
                 <div class="layer"></div>
             </div>
@@ -139,7 +141,7 @@
                             <span class="span-no-bold text-uppercase">DESCARGAS TOTALES</span>
                         </p>
                         <div class="title">
-                            <h3 id="downloadsTotal"></h3>
+                            <h3 id="downloadsTotal2" style="font-size: 36px;">{{total_downloads|intcomma }}</h3>
                         </div>
                     </div>
                     <div class="col-md-4 text-center">

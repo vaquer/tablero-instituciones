@@ -18,7 +18,8 @@ def tabla_comparativa(request):
     calificaciones de las mimas
     URL: /tablero-instituciones/
     """
-    return render(request, 'tabla-comparativa.html', {'settings': settings})
+    total_downloads = cache.get('descargas-total', 0)
+    return render(request, 'tabla-comparativa.html', {'settings': settings, 'total_downloads': total_downloads})
 
 
 def detalle_institucion(request, slug=''):

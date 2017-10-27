@@ -22,10 +22,12 @@ JSON_RECURSOS_DEPENDENCIAS = OrderedDict()
 JSON_DEPENDENCIAS_INFO = OrderedDict()
 URL_ADELA = settings.URL_BUDA_API
 URL_CKAN = 'https://datos.gob.mx/busca/api/3/action/organization_list'
+URL_BUDA_DESCARGAS = 'https://api.datos.gob.mx/v1/google_analytics?pageSize={0}'
 KEY_DEPEN = 'resumen-dependendencias'
 KEY_RECUR = 'descargas-recursos'
 KEY_DEPEND_RECURSOS = 'descargas-recursos-dependencias'
 KEY_TOTAL_RECURSOS = 'total-recursos'
+KEY_TOTAL_DOWNLOADS = 'descargas-total'
 CACHE_TTL = 60 * 60 * 24 * 7
 
 
@@ -67,12 +69,43 @@ class NetWorkTablero(object):
             return None
 
 
+class NetworkingDownloads(object):
+    """
+    Clase estatica de conexion
+    para el enpoint que trae conteos
+    de descargas por recursos
+    """
+
+    @staticmethod
+    def llamar_buda_conteos(pageSize=10000):
+        respuesta_api = requests.get(URL_BUDA_DESCARGAS.format(pageSize))
+
+        try:
+            return respuesta_api.json()
+        except Exception:
+            return {'results': []}
+
+
 class MatTableros(object):
     """
     Clase estatica que contiene
     las herramientas para calculos
     matematicos sobre las dependencias
     """
+    @staticmethod
+    def calcula_total_downloads(objecto):
+        """
+        Funcion que calcula el total de
+        descargas de capturadas por BUDA
+        del Analytics
+        """
+        total = 0;
+        for elemento in objecto['results']:
+            if elemento.get('value', 0):
+                total += elemento['value']
+        
+        return total
+
     @staticmethod
     def genera_calificacion(calidad, atrasos, descargas, recomendaciones):
         """
@@ -378,16 +411,18 @@ def scrapear_api_buda():
         count_dependencias += 1
         JSON_DEPENDENCIAS[dep] = MatTableros.generar_tablero(dep)
 
-        #if count_dependencias == 10:
-        #    break
+        # if count_dependencias == 10:
+            # break
 
     # Se crea el ranking de las dependencias
     ranking = MatTableros.calcula_ranking(JSON_DEPENDENCIAS)
+    total_downloads = MatTableros.calcula_total_downloads(NetworkingDownloads.llamar_buda_conteos())
     # Se guarda en cache por una semana
     cache.set(KEY_DEPEN, ranking, CACHE_TTL)
     cache.set(KEY_RECUR, JSON_RECURSOS, CACHE_TTL)
     cache.set(KEY_DEPEND_RECURSOS, JSON_RECURSOS_DEPENDENCIAS, CACHE_TTL)
     cache.set(KEY_TOTAL_RECURSOS, len(JSON_RECURSOS), CACHE_TTL)
+    cache.set(KEY_TOTAL_DOWNLOADS, total_downloads, CACHE_TTL)
     #cache.set(KEY_DEPENDENCIA_INFO, JSON_DEPENDENCIAS_INFO, CACHE_TTL)
 
     print "************************Terminan calculos*************************************"
