@@ -77,7 +77,7 @@ class NetworkingDownloads(object):
     """
 
     @staticmethod
-    def llamar_buda_conteos(pageSize=10000):
+    def llamar_buda_conteos(pageSize=10000000):
         respuesta_api = requests.get(URL_BUDA_DESCARGAS.format(pageSize))
 
         try:
