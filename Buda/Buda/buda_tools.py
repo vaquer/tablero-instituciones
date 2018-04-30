@@ -239,6 +239,7 @@ class MatTableros(object):
             for recurso in json_buda.get('results', []):
                 fecha_act = None
                 liga_saludable = True
+                title_dependencie = recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8')
 
                 if len(recurso['ckan']['resource'].keys()) == 0 and not recurso.get('adela'):
                     continue
@@ -293,7 +294,7 @@ class MatTableros(object):
 
                     try:
                         json_recurso = {
-                            'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8')),
+                            'recurso': '{0}'.format(title_dependencie),
                             'descargas': recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0,
                             'actualizacion': fecha_act.strftime("%d %b %Y") if fecha_act is not None else None,
                             'organizacion': JSON_DEPENDENCIAS_INFO[dependencia].get('titulo', None) or nombre_institucion,
@@ -302,8 +303,9 @@ class MatTableros(object):
                         }
                     except Exception, e:
 
+                        print e
                         json_recurso = {
-                            'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8')),
+                            'recurso': '{0}'.format(title_dependencie),
                             'descargas': recurso['analytics']['downloads']['total'] if recurso['analytics']['downloads']['total'] is not None else 0,
                             'actualizacion': None,
                             'organizacion': JSON_DEPENDENCIAS_INFO[dependencia].get('titulo', None) or nombre_institucion,
@@ -319,16 +321,17 @@ class MatTableros(object):
 
                     if json_recurso['id'] != '' and json_recurso['id'] is not None:
                         JSON_RECURSOS_DEPENDENCIAS[dependencia].append(json_recurso)
-                        JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8'))] = json_recurso
+                        JSON_RECURSOS['{0}'.format(title_dependencie)] = json_recurso
 
-                except TypeError:
+                except TypeError, error:
+                    print error
                     descargas += 0
                     JSON_RECURSOS_DEPENDENCIAS[dependencia].append({
-                        'recurso': '{0}'.format(recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8')),
+                        'recurso': '{0}'.format(title_dependencie),
                         'descargas': 0,
                         'actualizacion': None
                     })
-                    JSON_RECURSOS['{0}'.format(recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8'))] = 0
+                    JSON_RECURSOS['{0}'.format(title_dependencie)] = 0
 
 
                 if recurso['ckan'].get('resource', None) is not None:
@@ -382,7 +385,7 @@ class MatTableros(object):
             'publicos': publicos,
             'privados': privados,
             'ligas_no_accesibles': ligas_no_accesibles
-        } if len(json_buda.get('results', [])) > 1 else {
+        } if len(JSON_RECURSOS_DEPENDENCIAS[dependencia]) > 1 else {
             'institucion': nombre_institucion or dependencia,
             'apertura': 0,
             'calidad': 'N/A',
@@ -407,6 +410,7 @@ def scrapear_api_buda():
     """
     count_dependencias = 0
     for dep in NetWorkTablero.recuperar_dependencias():
+        # if dep == 'ran':
         print "Dependencia: {0}".format(dep)
         count_dependencias += 1
         JSON_DEPENDENCIAS[dep] = MatTableros.generar_tablero(dep)
