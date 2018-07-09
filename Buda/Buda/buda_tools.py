@@ -239,7 +239,13 @@ class MatTableros(object):
             for recurso in json_buda.get('results', []):
                 fecha_act = None
                 liga_saludable = True
-                title_dependencie = recurso['adela']['resource']['title'].encode('utf-8') if recurso.get('adela') else recurso['ckan']['resource']['name'].encode('utf-8')
+                if recurso.get('adela'):
+                    title_dependencie = recurso['adela']['resource']['title'].encode('utf-8')
+                else:
+                    try:
+                        title_dependencie = recurso['ckan']['resource']['name'].encode('utf-8')
+                    except KeyError:
+                        title_dependencie = recurso['ckan']['dataset']['name'].encode('utf-8')
 
                 if len(recurso['ckan']['resource'].keys()) == 0 and not recurso.get('adela'):
                     continue
