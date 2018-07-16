@@ -42,7 +42,7 @@ $(document).ready(function() {
         console.log(data);
         $.each(data.recursos, function(key, value){
           var htmlDatos = '';
-          htmlDatos += '<tr><td class="datosTitle" title="'+value[0]+'"><a href="https://datos.gob.mx/busca/dataset/' + value[3] + '/resource/' + value[2] + '" style="width: 345px;" >' + value[0] + '</a></td><td class="text-center datos-institucion">' + value[4].toLocaleString('en') + '</td></tr>';
+          htmlDatos += '<tr><td class="datosTitle" title="'+value[0]+'"><a href="https://datos.gob.mx/busca/dataset/' + value[3] + '/resource/' + value[2] + '">' + value[0] + '</a></td><td class="text-center datos-institucion">' + value[4].toLocaleString('en') + '</td></tr>';
           $('#table-datos tr').last().after(htmlDatos);
         });
       },
