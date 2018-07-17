@@ -202,6 +202,7 @@ table.dataTable tbody tr {
 
 table.dataTable.no-footer {
     border-bottom: none;
+    width: auto !important;
 }
 
 .table>thead>tr>th {
@@ -225,9 +226,6 @@ section#landing-table .data-table {
     margin-bottom: 40px;
 }
 
-/* #apf_table_previous, #apf_table_next {
-    display: block;
-} */
  #apf_table_previous {
     border: 1px solid #d8d8d8;
     margin-right: 5px;
@@ -236,6 +234,12 @@ section#landing-table .data-table {
 
 #apf_table_previous:hover {
     margin-right: 6px;
+}
+
+@media screen and (max-width: 480px) {
+    #apf_table_previous, #apf_table_next {
+        display: none;
+    }
 }
 
 #apf_table_next {
@@ -258,22 +262,21 @@ section#landing-table .data-table {
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background-color: #d8d8d8 !important; 
+    background-color: #d8d8d8 !important;
     border-color: #d8d8d8 !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-    background: #d8d8d8 !important; 
+    background: #d8d8d8 !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: #d8d8d8 !important; 
+    background: #d8d8d8 !important;
     border: #d8d8d8 !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-    padding: 4px 11px;
-    margin: 0px;
+    margin: 0;
     min-width: 24px;
     border-right: 1px solid #d8d8d8;
 }
@@ -284,7 +287,79 @@ section#landing-table .data-table {
 
 .dataTables_wrapper .dataTables_paginate .ellipsis {
     padding: 9px;
-    margin: 0px;
+    margin: 0;
     min-width: 24px;
     border-right: 1px solid #d8d8d8;
 }
+
+.data-table table > thead > tr > th {
+    vertical-align: middle;
+    padding-right: 18px;
+}
+
+@media screen and (max-width: 450px) {
+    .data-table table > thead > tr > th {
+        font-size: 7px !important;
+    }
+}
+@media screen and (min-width: 451px) {
+    .data-table table > thead > tr > th {
+        font-size: 11px !important;
+    }
+}
+@media screen and (min-width: 668px) {
+    .data-table table > thead > tr > th {
+        font-size: 14px !important;
+    }
+}
+
+/*
+/* Estilos que estaban en el html
+*/
+
+.landing-header {
+    padding-top: 30px;
+    padding-bottom: 60px;
+    text-align: center;
+    color: rgba(255,255,255,0.9);
+    position: relative;
+    margin-bottom: 0;
+    background: url(https://cdn.datos.gob.mx/tablero/img/notes-macbook-study-conference.jpg) center center no-repeat;
+    background-size: 2085px 890px;
+}
+
+.landing-header img {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    min-height: 100%;
+}
+.row-totales {
+    margin-top: 70px;
+}
+.beta {
+    color: white;
+    font-size: 14px;
+    background-color: #6b6b6b;
+    font-weight: bold;
+    padding: 5px;
+}
+.header-tableros {
+    margin-top: 50px;
+}
+.layer {
+    position: absolute;
+    background-color: rgba(21, 21, 21, 0.7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.table-header {color: #0c9;}
+.text-center { text-align: center !important; }
+.dataTable tr th { color: #0c9; text-transform: uppercase; }
+.datos-institucion { width: 100px; font-weight: 600; color: #6f6c6c; }
+.span-no-bold { font-weight: 400 !important; font-size: 14px !important; }
+#downloadsTotal, #downloadsTotal2, #resourcesTotal, #dependencesTotal { font-size: 36px; }
+.data-table tr th { text-align: right; }
