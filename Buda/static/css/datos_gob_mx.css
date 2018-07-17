@@ -225,9 +225,6 @@ section#landing-table .data-table {
     margin-bottom: 40px;
 }
 
-/* #apf_table_previous, #apf_table_next {
-    display: block;
-} */
  #apf_table_previous {
     border: 1px solid #d8d8d8;
     margin-right: 5px;
@@ -236,6 +233,12 @@ section#landing-table .data-table {
 
 #apf_table_previous:hover {
     margin-right: 6px;
+}
+
+@media screen and (max-width: 480px) {
+    #apf_table_previous, #apf_table_next {
+        display: none;
+    }
 }
 
 #apf_table_next {
@@ -272,8 +275,7 @@ section#landing-table .data-table {
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-    padding: 4px 11px;
-    margin: 0px;
+    margin: 0;
     min-width: 24px;
     border-right: 1px solid #d8d8d8;
 }
@@ -284,7 +286,7 @@ section#landing-table .data-table {
 
 .dataTables_wrapper .dataTables_paginate .ellipsis {
     padding: 9px;
-    margin: 0px;
+    margin: 0;
     min-width: 24px;
     border-right: 1px solid #d8d8d8;
 }
