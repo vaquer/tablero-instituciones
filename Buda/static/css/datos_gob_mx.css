@@ -202,6 +202,7 @@ table.dataTable tbody tr {
 
 table.dataTable.no-footer {
     border-bottom: none;
+    width: auto !important;
 }
 
 .table>thead>tr>th {
@@ -291,6 +292,26 @@ section#landing-table .data-table {
     border-right: 1px solid #d8d8d8;
 }
 
+.data-table table > thead > tr > th {
+    vertical-align: middle;
+    padding-right: 18px;
+}
+
+@media screen and (max-width: 450px) {
+    .data-table table > thead > tr > th {
+        font-size: 7px !important;
+    }
+}
+@media screen and (min-width: 451px) {
+    .data-table table > thead > tr > th {
+        font-size: 11px !important;
+    }
+}
+@media screen and (min-width: 668px) {
+    .data-table table > thead > tr > th {
+        font-size: 14px !important;
+    }
+}
 
 /*
 /* Estilos que estaban en el html
